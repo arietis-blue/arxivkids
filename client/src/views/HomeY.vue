@@ -1,22 +1,31 @@
 <template>
-       <TopNav />
+      <TopNav />
   <div class="common-layout">
     <el-container class="layout-container">
-      <el-header class="layout-header">Title</el-header>
       <el-container class="inner-container">
         <el-aside class="aside-container" width="70%">
           <el-scrollbar height="100%">
-            <p v-for="item in 20" :key="item" class="scrollbar-demo-item">{{ item }}</p>
+              <p v-for="iatem in 20" :key="item" class="scrollbr-demo-item">{{ item }}</p>
+                <PaperRow />
+                <PaperRow />
+                <PaperRow />
+                <PaperRow />
+                <PaperRow />
           </el-scrollbar>
         </el-aside>
 
         <el-container class="main-footer-container">
           <el-main class="main-container">
-            author date
+            Main
           </el-main>
           <el-footer class="footer-container">
             <el-scrollbar height="100%">
-              <p v-for="item in 20" :key="item" class="scrollbar-demo-item">{{ item }}</p>
+<!--            <p v-for="item in 20" :key="item" class="scrollbar-demo-item">{{ item }}</p>-->
+                <PaperRow />
+                <PaperRow />
+                <PaperRow />
+                <PaperRow />
+                <PaperRow />
             </el-scrollbar>
           </el-footer>
         </el-container>
@@ -26,7 +35,21 @@
 </template>
 
 
+
 <script setup>
+import { useRoute, useRouter } from "vue-router";
+// import TopNav from '../components/TopNav.vue'
+import PaperRow from "../components/PaperRow.vue";
+
+import { Search } from "@element-plus/icons-vue"
+
+const route = useRoute()
+const router = useRouter()
+
+const goLogin = () => {
+  router.push('/login')
+}
+
 </script>
 
 <style scoped>
@@ -34,9 +57,6 @@
   border: 1px solid #ccc;
 }
 
-.layout-header {
-  border-bottom: 1px solid #ccc;
-}
 
 .inner-container {
   border: 1px solid #ccc;
@@ -45,13 +65,10 @@
 .aside-container {
   border-right: 1px solid #ccc;
   height: 98vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .main-footer-container {
   width: 30%;
-  height: 98vh;
   display: flex;
   flex-direction: column;
   border-left: 1px solid #ccc;
@@ -59,12 +76,11 @@
 
 .main-container {
   flex: 1;
-  height: 30vh;
   border-bottom: 1px solid #ccc;
 }
 
 .footer-container {
-  height: 70vh; /* Adjust the height as needed */
+  height: 50vh; /* Adjust the height as needed */
   border-top: 1px solid #ccc;
 }
 
