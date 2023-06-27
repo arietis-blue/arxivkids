@@ -16,14 +16,19 @@
         @click="goLogin">
         Login
       </button>
+      <el-icon color="#409EFC" :size="50"><MoreFilled /></el-icon>
     </div>
   </div>
 </template>
 
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-
+import { Search } from "@element-plus/icons-vue"
 const route = useRoute()
 const router = useRouter()
+
+const goLogin = () => {
+  router.push('/login')
+}
 
 </script>
