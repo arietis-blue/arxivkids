@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PollsConfig(AppConfig):
+class App_FolderConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'polls'
+    name = 'App_Folder'
