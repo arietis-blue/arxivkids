@@ -1,5 +1,5 @@
 <template>
-  <!-- <TopNav /> -->
+  <TopNav />
 
   <div class="bg-neutral-700 py-3 mt-4 flex justify-between items-center w-full border-b h-[70px]">
     <img src="../assets/arxiv-logo-1-300x135.png" style="transform: scale(0.6);">
@@ -18,7 +18,7 @@
         @click="goLogin">
         Login
       </button>
-      <!-- <el-icon color="#409EFC" :size="50"><MoreFilled /></el-icon> -->
+      <el-icon color="#409EFC" :size="50"><MoreFilled /></el-icon>
     </div>
 
     
@@ -33,9 +33,7 @@
   <PaperRow />
   <PaperRow />
 
-  <el-scrollbar height="400px">
-    <p v-for="item in 20" :key="item" class="scrollbar-demo-item">{{ item }}</p>
-  </el-scrollbar>
+  
 </template>
 
 <script setup>
