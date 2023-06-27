@@ -13,9 +13,9 @@
   <div class="flex items-center justify-center">
     <el-button type="danger" >Sign Up</el-button>
   </div>
-  
+
 </template>
-  
+
 <script setup>
 import { ref } from 'vue';
 
@@ -33,7 +33,7 @@ const login = () => {
   }
 };
 </script>
-  
+
 <style scoped>
 .login {
   max-width: 400px;
@@ -73,4 +73,3 @@ button {
   cursor: pointer;
 }
 </style>
-  
