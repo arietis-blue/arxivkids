@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'App_Folder', # App_Folderフォルダを追加
+    'rest_framework', # Django REST framework 追加
 ]
 
 MIDDLEWARE = [
@@ -99,6 +100,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    'http://127.0.0.1:8080',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+    'http://localhost:8080',
+)
 
 
 # Internationalization
