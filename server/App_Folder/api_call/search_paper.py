@@ -1,4 +1,3 @@
-from pathlib import Path
 from arxiv_api.arxiv_search import get_arxiv_data
 from deepl_api.deepl import translate_ja_list
 

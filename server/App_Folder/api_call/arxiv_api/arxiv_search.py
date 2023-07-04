@@ -1,5 +1,4 @@
 import arxiv
-from pathlib import Path
 
 # 検索文を受け取りjsonのリストを返す
 def get_arxiv_data(query):
