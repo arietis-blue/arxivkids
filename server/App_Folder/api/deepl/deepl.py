@@ -1,9 +1,7 @@
 import requests
 from pathlib import Path
 import pandas as pd
-import time
 from dotenv import load_dotenv
-import sys
 import os
 
 load_dotenv(Path(__file__).parent.parent.joinpath(".env"))
@@ -11,7 +9,7 @@ API_KEY =os.environ["DEEPL_API_KEY"]# 自身の API キーを指定
 source_lang = 'EN'
 target_lang = 'JA'
 
-# 英語のリストを受け取り、翻訳した文章を追加したリストとして返す
+# 英語の文字列のリストを受け取り、翻訳した文章を追加したリストとして返す
 def translate_ja_list(content_list):
     # content_list = [article['Content_En'] for article in article_list] #articleの情報に訳をそのまま追加する場合
     # パラメータの指定

@@ -2,10 +2,8 @@
 import os
 from dotenv import load_dotenv
 import openai
-import sys
 from pathlib import Path
 import json
-import pandas as pd
 import time
 
 load_dotenv(Path(__file__).parent.parent.joinpath(".env"))
