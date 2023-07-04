@@ -1,5 +1,4 @@
 import arxiv
-import pandas as pd
 from pathlib import Path
 
 # 検索文を受け取りjsonのリストを返す
