@@ -2,7 +2,6 @@ from pathlib import Path
 from arxiv_api.arxiv_search import get_arxiv_data
 from deepl_api.deepl import translate_ja_list
 
-
 def main(query):
     # arxivから論文の取得
     paper_list = get_arxiv_data(query)
@@ -13,4 +12,4 @@ def main(query):
     for i,paper in enumerate(paper_list):
         paper["Title_Ja"] = title_ja_list[i]
     return(paper_list)
-main('LLM cat:cs.CL')
+print(main('LLM cat:cs.CL'))

@@ -22,7 +22,6 @@ def translate_ja_list(content_list):
     # リクエストを投げる
     request = requests.post("https://api-free.deepl.com/v2/translate", data=params) # URIは有償版, 無償版で異なるため要注意
     result = request.json()
-    print(result["translations"])
     result_list = [item['text'] for item in result["translations"]]
     return result_list
 

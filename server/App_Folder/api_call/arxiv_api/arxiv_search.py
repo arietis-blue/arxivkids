@@ -13,12 +13,17 @@ def get_arxiv_data(query):
 
     data_list = []
     for result in search.results():
+        # Arxivで定義されたAuthor型から名前を取り出しリストにする 
+        author_list =[]
+        for author in result.authors:
+            author_list.append(author.name)
         data = {
             'ID': result.entry_id,
             'Title_En': result.title,
-            'Content_En': result.summary,  
-            # 'Categories': result.categories, # 論文のカテゴリ     
-            # 'Pdf_url': result.pdf_url # PDFのURL 
+            'Content_En': result.summary,  #abstract
+            'Categories': result.categories, # 論文のカテゴリ  
+            'authors': author_list, # 著者のリスト
+            'Pdf_url': result.pdf_url # PDFのURL
             }
         data_list.append(data)
     
