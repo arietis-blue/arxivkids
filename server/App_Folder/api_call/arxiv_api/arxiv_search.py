@@ -3,7 +3,7 @@ from pathlib import Path
 
 # 検索文を受け取りjsonのリストを返す
 def get_arxiv_data(query):
-    max_results = 1
+    max_results = 2
     search = arxiv.Search(
         query=query,
         max_results=max_results,
@@ -24,8 +24,8 @@ def get_arxiv_data(query):
     
     return data_list
 
-# Example usage
-query = 'LLM cat:cs.CL'
-json_list = get_arxiv_data(query)
-print(type(json_list))
-print(json_list)
+# # Example usage
+# query = 'LLM cat:cs.CL'
+# json_list = get_arxiv_data(query)
+# print(type(json_list))
+# print(json_list)

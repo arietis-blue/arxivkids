@@ -1,6 +1,6 @@
 import requests
 from pathlib import Path
-import pandas as pd
+
 from dotenv import load_dotenv
 import os
 
@@ -41,8 +41,8 @@ def translate_ja(text):
     result = result["translations"][0]["text"]
     return result
 
-# Example Usage
-text = "Attention is all you need"
-text_list = ["Attention is all you need", "Automated facillitation agent", "Attention is all you need"]
-print(translate_ja_list(text_list))
-# print(translate_ja(text))
+# # Example Usage
+# text = "Attention is all you need"
+# text_list = ["Attention is all you need", "Automated facillitation agent", "Attention is all you need"]
+# print(translate_ja_list(text_list))
+# # print(translate_ja(text))
