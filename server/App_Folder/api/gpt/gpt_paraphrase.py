@@ -11,6 +11,7 @@ import time
 load_dotenv(Path(__file__).parent.parent.joinpath(".env"))
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
+# テキストを受け取って平易に言い換えたテキストを返す
 def paraphrase(content):
   time_sta = time.time()
   schema = {
@@ -44,4 +45,6 @@ def paraphrase(content):
   print(result)
   return(result)
 
-
+# Example Usage
+Text = '名前付きエンティティ認識(NER)は、名前や日付など様々な文書やテキストから情報を抽出するために使用される。履歴書のすべての情報を手作業でシステムに入力しなければならないという事実を考慮すると、このプロセスを自動化することは企業の時間を節約することになる。'
+paraphrase(Text)
