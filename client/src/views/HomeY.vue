@@ -1,11 +1,12 @@
 <template>
-      <TopNav />
-  <div class="common-layout">
+  <TopNav />
+
+  <div class="common-layout pt-[100px]">
     <el-container class="layout-container">
       <el-container class="inner-container">
         <el-aside class="aside-container" width="70%">
           <el-scrollbar height="100%">
-              <p v-for="iatem in 20" :key="item" class="scrollbr-demo-item">{{ item }}</p>
+            <p v-for="item in 30" :key="item" class="scrollbar-demo-item">{{ item }}</p>
                 <PaperRow />
                 <PaperRow />
                 <PaperRow />
