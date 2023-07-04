@@ -2,10 +2,8 @@
 import os
 from dotenv import load_dotenv
 import openai
-import sys
 from pathlib import Path
 import json
-import pandas as pd
 import time
 
 load_dotenv(Path(__file__).parent.parent.joinpath(".env"))
@@ -43,8 +41,8 @@ def paraphrase(content):
   tim = time_end- time_sta
   print(tim)
   print(result)
-  return(result)
+  return(result["plain_abstract"])
 
-# Example Usage
-Text = '名前付きエンティティ認識(NER)は、名前や日付など様々な文書やテキストから情報を抽出するために使用される。履歴書のすべての情報を手作業でシステムに入力しなければならないという事実を考慮すると、このプロセスを自動化することは企業の時間を節約することになる。'
-paraphrase(Text)
+# # Example Usage
+# Text = '名前付きエンティティ認識(NER)は、名前や日付など様々な文書やテキストから情報を抽出するために使用される。履歴書のすべての情報を手作業でシステムに入力しなければならないという事実を考慮すると、このプロセスを自動化することは企業の時間を節約することになる。'
+# paraphrase(Text)

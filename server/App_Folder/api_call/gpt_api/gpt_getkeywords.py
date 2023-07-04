@@ -2,10 +2,8 @@
 import os
 from dotenv import load_dotenv
 import openai
-import sys
 from pathlib import Path
 import json
-import pandas as pd
 import time
 
 
@@ -13,24 +11,23 @@ load_dotenv(Path(__file__).parent.parent.joinpath(".env"))
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 # Textを受け取りキーワードと説明文のリストを返す
-def gpt_keywords(content):
+def keywords(content):
   time_sta = time.time()
   schema = {
   "type": "object",
   "properties": {
-       "keywords": {
+       "keywords_list": {
       "type": "array",
       "description": "Important Japanese key words in the abstract.",
       "items": { "type": "string" }
     },
-    "keywords_description": {
+    "keywords_description_list": {
       "type": "string",
       "description": "The explanation of Japanese key words."
     }
   },
-  "required": ["keywords","keywords_description"]
+  "required": ["keywords_list","keywords_description_list"]
 }
-
   completion = openai.ChatCompletion.create(
     model="gpt-3.5-turbo-0613",
     messages=[
@@ -55,7 +52,7 @@ def gpt_keywords(content):
   print(result)
   return(result)
 
-# Example Usage
-Text = 'D-AgreeはBERTを用いたオンライン議論プラットフォームです。ファシリテーションエージェントが議論中の投稿をIBIS構造に基づき分類し、合意形成のための適切なファシリテーションを行います'
-gpt_keywords(Text)
+# # Example Usage
+# Text = 'D-AgreeはBERTを用いたオンライン議論プラットフォームです。ファシリテーションエージェントが議論中の投稿をIBIS構造に基づき分類し、合意形成のための適切なファシリテーションを行います'
+# keywords(Text)
 
