@@ -22,7 +22,8 @@ def get_arxiv_data(query):
             'Content_En': result.summary,  #abstract
             'Categories': result.categories, # 論文のカテゴリ  
             'authors': author_list, # 著者のリスト
-            'Pdf_url': result.pdf_url # PDFのURL
+            'Pdf_url': result.pdf_url, # PDFのURL
+            'published': result.published #出版された日時の追加(datetime.datetime型で返す)
             }
         data_list.append(data)
     

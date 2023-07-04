@@ -11,4 +11,4 @@ def main(query):
     for i,paper in enumerate(paper_list):
         paper["Title_Ja"] = title_ja_list[i]
     return(paper_list)
-print(main('LLM cat:cs.CL'))
+# print(main('LLM cat:cs.CL'))
