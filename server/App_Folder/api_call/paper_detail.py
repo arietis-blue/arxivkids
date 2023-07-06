@@ -1,8 +1,8 @@
-from gpt_api.gpt_getkeywords import keywords
-from gpt_api.gpt_paraphrase import paraphrase
-from deepl_api.deepl import translate_ja_list
-from deepl_api.deepl import translate_ja
-import search_paper
+from .gpt_api.gpt_getkeywords import keywords
+from .gpt_api.gpt_paraphrase import paraphrase
+from .deepl_api.deepl import translate_ja_list
+from .deepl_api.deepl import translate_ja
+# import search_paper
 
 # 論文のjsonを受け取り、Content_Ja, Keywordsを追加
 def main(paper_json):

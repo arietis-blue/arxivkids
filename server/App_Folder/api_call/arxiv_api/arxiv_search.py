@@ -1,8 +1,16 @@
 import arxiv
+import json
+from pathlib import Path
+
+# カテゴリーの対応表のjsonファイルの読み取り
+parent = Path(__file__).resolve().parent
+with open(parent.joinpath("cat_dic.json")) as f:
+    cat_dic = json.load(f)
+
 
 # 検索文を受け取りjsonのリストを返す
 def get_arxiv_data(query):
-    max_results = 2
+    max_results = 1
     search = arxiv.Search(
         query=query,
         max_results=max_results,
@@ -16,11 +24,15 @@ def get_arxiv_data(query):
         author_list =[]
         for author in result.authors:
             author_list.append(author.name)
+        # Categoryをわかりやすい名前に変えてリスト化 
+        category_list = []
+        for category in result.categories:
+            category_list.append(cat_dic[category])
         data = {
             'ID': result.entry_id,
             'Title_En': result.title,
             'Content_En': result.summary,  #abstract
-            'Categories': result.categories, # 論文のカテゴリ  
+            'Categories': category_list, # 論文のカテゴリ  
             'authors': author_list, # 著者のリスト
             'Pdf_url': result.pdf_url, # PDFのURL
             'published': result.published #出版された日時の追加(datetime.datetime型で返す)
