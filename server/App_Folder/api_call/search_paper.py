@@ -1,5 +1,5 @@
-from arxiv_api.arxiv_search import get_arxiv_data
-from deepl_api.deepl import translate_ja_list
+from .arxiv_api.arxiv_search import get_arxiv_data
+from .deepl_api.deepl import translate_ja_list
 
 def main(query):
     # arxivから論文の取得

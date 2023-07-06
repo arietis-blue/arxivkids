@@ -1,10 +1,10 @@
-from gpt_api.gpt_getkeywords import keywords
-from gpt_api.gpt_paraphrase import paraphrase
-from deepl_api.deepl import translate_ja_list
-from deepl_api.deepl import translate_ja
-import search_paper
+from .gpt_api.gpt_getkeywords import keywords
+from .gpt_api.gpt_paraphrase import paraphrase
+from .deepl_api.deepl import translate_ja_list
+from .deepl_api.deepl import translate_ja
+# import search_paper
 
-# 論文のjsonを受け取り、Content_Ja, Keywordsを追加
+# 論文のjsonを受け取り、Content_Ja, (Keywords)を追加
 def main(paper_json):
     # 要約の日本語訳
     content_ja = translate_ja(paper_json["Content_En"])
