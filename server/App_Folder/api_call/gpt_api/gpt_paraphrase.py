@@ -40,7 +40,7 @@ def paraphrase(content):
   # 経過時間（秒）
   tim = time_end- time_sta
   print(tim)
-  print(result)
+  # print(result)
   return(result["plain_abstract"])
 
 # # Example Usage

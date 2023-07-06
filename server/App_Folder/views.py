@@ -6,24 +6,32 @@ from rest_framework.response import Response
 
 from .api_call import search_paper, paper_detail
 
+# Arxiv_Searchのgetメソッドを用いたDebug用 
+search = [
+    {
+    "search": "LLM cat:cs.CL"
+    }
+]
+
 # Create your views here.
 class Arxiv_Search(APIView):
     def get(self, request):
         # return Response("OK", status=status.HTTP_200_OK)
-        return Response(search_paper.main('LLM cat:cs.CL'))
+        return Response(search_paper.main(search[0]["search"]))
     
     def post(self, request, *args, **kwargs):
         search_word = request.data
         return Response(search_paper.main(search_word['search']))
-    
+
+# Paper_detailのgetメソッドを用いたDebug用  
 contents = [
     {
         "ID": "http://arxiv.org/abs/2307.02486v1",
         "Title_En": "LongNet: Scaling Transformers to 1,000,000,000 Tokens",
         "Content_En": "Scaling sequence length has become a critical demand in the era of large\nlanguage models. However, existing methods struggle with either computational\ncomplexity or model expressivity, rendering the maximum sequence length\nrestricted. In this work, we introduce LongNet, a Transformer variant that can\nscale sequence length to more than 1 billion tokens, without sacrificing the\nperformance on shorter sequences. Specifically, we propose dilated attention,\nwhich expands the attentive field exponentially as the distance grows. LongNet\nhas significant advantages: 1) it has a linear computation complexity and a\nlogarithm dependency between tokens; 2) it can be served as a distributed\ntrainer for extremely long sequences; 3) its dilated attention is a drop-in\nreplacement for standard attention, which can be seamlessly integrated with the\nexisting Transformer-based optimization. Experiments results demonstrate that\nLongNet yields strong performance on both long-sequence modeling and general\nlanguage tasks. Our work opens up new possibilities for modeling very long\nsequences, e.g., treating a whole corpus or even the entire Internet as a\nsequence.",
         "Categories": [
-            "cs.CL",
-            "cs.LG"
+            "Computation and Language",
+            "Machine Learning"
         ],
         "authors": [
             "Jiayu Ding",
@@ -47,15 +55,15 @@ class Paper_detail(APIView):
     
     def post(self, request, *args, **kwargs):
         search_json = request.data
-        return Response(paper_detail.main(search_json))
+        return Response(paper_detail.main(search_json[0]))
     
 # {
 #     "ID": "http://arxiv.org/abs/2307.02486v1",
 #     "Title_En": "LongNet: Scaling Transformers to 1,000,000,000 Tokens",
 #     "Content_En": "Scaling sequence length has become a critical demand in the era of large\nlanguage models. However, existing methods struggle with either computational\ncomplexity or model expressivity, rendering the maximum sequence length\nrestricted. In this work, we introduce LongNet, a Transformer variant that can\nscale sequence length to more than 1 billion tokens, without sacrificing the\nperformance on shorter sequences. Specifically, we propose dilated attention,\nwhich expands the attentive field exponentially as the distance grows. LongNet\nhas significant advantages: 1) it has a linear computation complexity and a\nlogarithm dependency between tokens; 2) it can be served as a distributed\ntrainer for extremely long sequences; 3) its dilated attention is a drop-in\nreplacement for standard attention, which can be seamlessly integrated with the\nexisting Transformer-based optimization. Experiments results demonstrate that\nLongNet yields strong performance on both long-sequence modeling and general\nlanguage tasks. Our work opens up new possibilities for modeling very long\nsequences, e.g., treating a whole corpus or even the entire Internet as a\nsequence.",
 #     "Categories": [
-#         "cs.CL",
-#         "cs.LG"
+#         "Computation and Language",
+#         "Machine Learning"
 #     ],
 #     "authors": [
 #         "Jiayu Ding",
