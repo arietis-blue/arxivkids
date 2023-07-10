@@ -2,7 +2,7 @@ from .gpt_api.gpt_getkeywords import keywords
 from .gpt_api.gpt_paraphrase import paraphrase
 from .deepl_api.deepl import translate_ja_list
 from .deepl_api.deepl import translate_ja
-# import search_paper
+import search_paper
 
 # 論文のjsonを受け取り、Content_Ja, (Keywords)を追加
 def main(paper_json):
@@ -13,8 +13,9 @@ def main(paper_json):
     plain_content = paraphrase(content_ja)
     paper_json["Content_plain"] = plain_content
     # # キーワードの取得
-    # keywords_json = keywords(plain_content)
-    # keyword_list = keywords_json["keyword"]
+    keywords_json = keywords(plain_content)
+    keyword_list = keywords_json["list"]
+    paper_json["Keyword"] = keyword_list
     return paper_json
 
 # papers = search_paper.main('LLM cat:cs.CL')
