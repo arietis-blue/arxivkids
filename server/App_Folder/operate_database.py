@@ -108,4 +108,14 @@ def get_histry(request_User_ID):
 
 # def add_histry(read_data):
 
+
+
+
+# delete all data in the database (for supervisor)
+
+def delete():
+    Papers.objects.all().delete()
+    Keywords.objects.all().delete()
+    Profile.objects.all().delete()
+    Reads.objects.all().delete()
     
