@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-# from rest_framework import status
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -17,8 +17,8 @@ search = {
 # Create your views here.
 class Arxiv_Search(APIView):
     def get(self, request):
-        # return Response("OK", status=status.HTTP_200_OK)
-        return Response(search_paper.main(search["Search"]))
+        return Response("OK", status=status.HTTP_200_OK)
+        # return Response(search_paper.main(search["Search"]))
     
     def post(self, request, *args, **kwargs):
         search_word = request.data
@@ -76,8 +76,8 @@ contents =  {
 
 class Paper_detail(APIView):
     def get(self, request):
-        # return Response("OK", status=status.HTTP_200_OK)
-        return Response(paper_detail.main(contents))
+        return Response("OK", status=status.HTTP_200_OK)
+        # return Response(paper_detail.main(contents))
     
     def post(self, request, *args, **kwargs):
         search_paper_json = request.data
