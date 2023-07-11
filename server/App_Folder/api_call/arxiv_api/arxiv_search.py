@@ -28,14 +28,17 @@ def get_arxiv_data(query):
         category_list = []
         for category in result.categories:
             category_list.append(cat_dic[category])
+        # 改行の削除
+        title = (result.title).replace('\n','')
+        summary = (result.summary).replace('\n','')
         data = {
-            'ID': result.entry_id,
-            'Title_En': result.title,
-            'Content_En': result.summary,  #abstract
+            'Paper_ID': result.entry_id,
+            'Title_En': title,
+            'Content_En': summary,  #abstract
             'Categories': category_list, # 論文のカテゴリ  
-            'authors': author_list, # 著者のリスト
+            'Authors': author_list, # 著者のリスト
             'Pdf_url': result.pdf_url, # PDFのURL
-            'published': result.published #出版された日時の追加(datetime.datetime型で返す)
+            'Published': result.published #出版された日時の追加(datetime.datetime型で返す)
             }
         data_list.append(data)
     

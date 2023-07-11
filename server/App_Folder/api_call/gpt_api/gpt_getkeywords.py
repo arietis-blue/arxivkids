@@ -18,45 +18,46 @@ def keywords(content):
   "properties": {
        "list": {
       "type": "array",
-      "description": "Important Japanese keywords and their description.",
+      "description": "Important Japanese keywords and their detailed description.",
       "items": { 
           "keyword":{
-            "keyword_title":{
+            "Keyword":{
               "type":"string",
               "description":"keyword name"
             },
-            "keyword_description":{
+            "Description":{
               "type":"string",
-              "description":"A 100-word sentence explaining the meaning of the KEYWORD"
+              "description":"200 Japanese Characters explaining the meaning of the KEYWORD"
             },
           }
                 }
     }
   },
-  "required": ["keyword_title","keyword_description"]
+  "required": ["Keyword","Description"]
 }  
   
   
   prompt = """
-           Task: Please extract five technical terms about following paper and its description in Japanese. The description should be approximately 200 Japanese characters.
+           Task: Please extract five technical terms about following paper and its detailed description in Japanese. 
+           Limitation: each keyword description is in 200 Japanese Characters.
            Format example:
            [
              {
-               'keyword_title':"keyword_1_title",
-               'keyword_description':"keyword_1_description
+               'Keyword':"keyword_1_title",
+               'Description':"keyword_1_description
              },
             {
-               'keyword_title':"keyword_2_title",
-               'keyword_description':"keyword_2_description
+               'Keyword':"keyword_2_title",
+               'Description':"keyword_2_description
              },
             {
-               'keyword_title':"keyword_3_title",
-               'keyword_description':"keyword_3_description
+               'Keyword':"keyword_3_title",
+               'Description':"keyword_3_description
              }
             ,,,
             {
-               'keyword_title':"keyword_n_title",
-               'keyword_description':"keyword_n_description
+               'Keyword':"keyword_n_title",
+               'Description':"keyword_n_description
              }           ]
            """\
           + content
@@ -88,6 +89,6 @@ def keywords(content):
   return(result)
 
 # Example Usage
-# Text = 'D-AgreeはBERTを用いたオンライン議論プラットフォームです。ファシリテーションエージェントが議論中の投稿をIBIS構造に基づき分類し、合意形成のための適切なファシリテーションを行います'
+# Text = '我々は、高レベルのコミュニケーションと低レベルのパスプランニングの両方に、事前に訓練された大規模言語モデル（LLM）の力を活用する、マルチロボット協調のための新しいアプローチを提案する。ロボットは、タスク戦略を議論し、集団的に推論するためにLLMを装備している。LLMはサブタスク計画とタスク空間ウェイポイント経路を生成し、マルチアームモーションプランナーにより軌道計画を加速する。また、衝突チェックのような環境からのフィードバックを提供し、LLMエージェントがコンテキスト内で計画とウェイポイントを改善するように促す。評価のために、我々はRoCoBenchを導入する。RoCoBenchは、エージェントの表現と推論のためのテキストのみのデータセットとともに、幅広いマルチロボット協調シナリオをカバーする6タスクベンチマークである。RoCoBenchの全てのタスクにおいて高い成功率を達成し、タスクセマンティクスの変化にも適応する。我々のダイアログ設定は高い解釈性と柔軟性を提供し、実世界の実験では、RoCoは簡単にヒューマンインザループを組み込むことができ、ユーザはロボットエージェントとコミュニケーションし、協力してタスクを完了することができる。ビデオとコードはプロジェクトのウェブサイトhttps://project-roco.github.io'
 # keywords(Text)
 
