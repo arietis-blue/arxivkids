@@ -43,7 +43,9 @@
             </div>
         </div>
 
-        <PaperRow />
+        <PaperRow
+            author="ABCDEF"
+        />
 
     </div>
 </template>
