@@ -40,7 +40,7 @@ class Arxiv_Search(APIView):
             if len(paper_json)==0:
                 paper_json = search_paper.add_ja_title(paper)
                 # データベースに追加
-                add_title(paper_json)
+                # add_title(paper_json)
             
             # リストに追加
             search_list.append(paper_json)
