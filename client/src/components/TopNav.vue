@@ -10,7 +10,7 @@
           v-model="searchContent"
           placeholder="Search papers">
         <div class="px-3 py-1 flex items-center border-l border-l-gray-300">
-          <el-button :icon="Search" circle />
+          <el-button :icon="Search" circle @click="getFivePapers"/>
         </div>
       </div>
 
@@ -59,6 +59,7 @@
 </template>
 
 <script setup>
+import axios from 'axios'
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Search } from "@element-plus/icons-vue"
@@ -71,6 +72,9 @@ import LogoutVariantIcon from "vue-material-design-icons/LogoutVariant.vue";
 import { useIsLoginOpenStore } from '../stores/isLoginOpen'
 const isLoginOpenStore = useIsLoginOpenStore()
 
+import { useFivePapersStore } from '../stores/fivePapers'
+const fivePapersStore = useFivePapersStore()
+
 const route = useRoute()
 const router = useRouter()
 
@@ -78,6 +82,21 @@ let showMenu = ref(false)
 let isLogined = ref(false)
 
 const searchContent = ref("")
+// const fivePapers = ref([])
+// const fivePapers = ref()
+
+const getFivePapers = () => {
+  console.log(searchContent)
+  //别忘了script要value，之前"Search": searchContent就错了  有问题console.log()检查
+  axios.post('http://127.0.0.1:8000/api/arxiv/', {"Search": searchContent.value})
+    .then(res => {
+      console.log(res.data)
+      fivePapersStore.fivePapers = res.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
 
 const goLogin = () => {
   router.push('/login')
