@@ -38,7 +38,7 @@ def keywords(content,category):
   category_prompt = ",\n".join(category)
   
   prompt = """
-           Task: I would like to acquire and explain technical terms so that beginners can understand the following paper. Please extract five technical terms in japanese. And create a description for that keyword in Japanese. However, please add an explanation of the word itself as well as how it is used in the abstract.
+           Task: I would like to acquire and explain technical terms so that beginners can understand the following paper. Please extract five technical term. And create a description for that keyword in Japanese. However, please add an explanation of the word itself as well as how it is used in the abstract.
            Limit: Each description must be written in around 200 Japanese characters.
            Format example:
            [
@@ -88,12 +88,12 @@ def keywords(content,category):
   return(result)
 
 # Example Usage
-Text = '我々は、高レベルのコミュニケーションと低レベルのパスプランニングの両方に、事前に訓練された大規模言語モデル（LLM）の力を活用する、マルチロボット協調のための新しいアプローチを提案する。ロボットは、タスク戦略を議論し、集団的に推論するためにLLMを装備している。LLMはサブタスク計画とタスク空間ウェイポイント経路を生成し、マルチアームモーションプランナーにより軌道計画を加速する。また、衝突チェックのような環境からのフィードバックを提供し、LLMエージェントがコンテキスト内で計画とウェイポイントを改善するように促す。評価のために、我々はRoCoBenchを導入する。RoCoBenchは、エージェントの表現と推論のためのテキストのみのデータセットとともに、幅広いマルチロボット協調シナリオをカバーする6タスクベンチマークである。RoCoBenchの全てのタスクにおいて高い成功率を達成し、タスクセマンティクスの変化にも適応する。我々のダイアログ設定は高い解釈性と柔軟性を提供し、実世界の実験では、RoCoは簡単にヒューマンインザループを組み込むことができ、ユーザはロボットエージェントとコミュニケーションし、協力してタスクを完了することができる。ビデオとコードはプロジェクトのウェブサイトhttps://project-roco.github.io'
-category = [
-        "Robotics",
-        "Artificial Intelligence",
-        "Machine Learning"
-    ]
-output = keywords(Text,category)
-print(output)
+# Text = '我々は、高レベルのコミュニケーションと低レベルのパスプランニングの両方に、事前に訓練された大規模言語モデル（LLM）の力を活用する、マルチロボット協調のための新しいアプローチを提案する。ロボットは、タスク戦略を議論し、集団的に推論するためにLLMを装備している。LLMはサブタスク計画とタスク空間ウェイポイント経路を生成し、マルチアームモーションプランナーにより軌道計画を加速する。また、衝突チェックのような環境からのフィードバックを提供し、LLMエージェントがコンテキスト内で計画とウェイポイントを改善するように促す。評価のために、我々はRoCoBenchを導入する。RoCoBenchは、エージェントの表現と推論のためのテキストのみのデータセットとともに、幅広いマルチロボット協調シナリオをカバーする6タスクベンチマークである。RoCoBenchの全てのタスクにおいて高い成功率を達成し、タスクセマンティクスの変化にも適応する。我々のダイアログ設定は高い解釈性と柔軟性を提供し、実世界の実験では、RoCoは簡単にヒューマンインザループを組み込むことができ、ユーザはロボットエージェントとコミュニケーションし、協力してタスクを完了することができる。ビデオとコードはプロジェクトのウェブサイトhttps://project-roco.github.io'
+# category = [
+#         "Robotics",
+#         "Artificial Intelligence",
+#         "Machine Learning"
+#     ]
+# output = keywords(Text,category)
+# print(output)
 
