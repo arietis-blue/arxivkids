@@ -1,9 +1,13 @@
 from .arxiv_api.arxiv_search import get_arxiv_data
 from .deepl_api.deepl import translate_ja_list
 
-def main(query):
+def get_papers(query):
     # arxivから論文の取得
     paper_list = get_arxiv_data(query)
+    return paper_list
+
+# 論文のjsonのリストを受け取り、日本語のタイトル
+def add_ja_title(paper_list):
     title_list = [paper["Title_En"] for paper in paper_list]
     # タイトルをdeeplで翻訳
     title_ja_list = translate_ja_list(title_list)
