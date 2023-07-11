@@ -1,12 +1,15 @@
 <template>
-       <TopNav />
-  <div class="common-layout">
-    <el-container class="layout-container">
+  <TopNav />
+
+  <div class="common-layout pt-12">
+    <el-container class="layout-container pt-12">
       <el-header class="layout-header">Title</el-header>
       <el-container class="inner-container">
         <el-aside class="aside-container" width="70%">
           <el-scrollbar height="100%">
-            <p v-for="item in 20" :key="item" class="scrollbar-demo-item">{{ item }}</p>
+            <div>
+              {{ paperBody }}
+            </div>
           </el-scrollbar>
         </el-aside>
 
@@ -15,8 +18,17 @@
             author date
           </el-main>
           <el-footer class="footer-container">
+            {{ keyWords }}
             <el-scrollbar height="100%">
-              <p v-for="item in 20" :key="item" class="scrollbar-demo-item">{{ item }}</p>
+                <div class="mb-4">
+                 <KeywordRow />
+                </div>
+                <div class="mb-4">
+                  <KeywordRow />
+                </div>
+                <div class="mb-4">
+                    <KeywordRow />
+                </div>
             </el-scrollbar>
           </el-footer>
         </el-container>
@@ -27,6 +39,37 @@
 
 
 <script setup>
+import { ref } from "vue"
+import axios from 'axios'
+
+const paperBody = ref("sdfdsfdf")
+const keyWords = ref([])
+
+const getPaperBody = () => {
+  axios.get('api/papers/getBody')
+    .then(res => {
+    console.log(res.data)
+    paperBody.value = res.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+getPaperBody()
+
+
+const getKeywords = () => {
+  axios.get('api/papers/getKeywords').then(res => {
+    console.log(res.data)
+    keyWords.value = res.data
+  })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+getKeywords()
+
+
 </script>
 
 <style scoped>
@@ -68,15 +111,5 @@
   border-top: 1px solid #ccc;
 }
 
-.scrollbar-demo-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  margin: 10px;
-  text-align: center;
-  border-radius: 4px;
-  background: var(--el-color-primary-light-9);
-  color: var(--el-color-primary);
-}
+
 </style>

@@ -5,13 +5,12 @@
         <div class="relative bg-white w-full max-w-[470px] h-[70%] p-4 rounded-lg">
 
             <div class="w-full flex justify-end">
-                <button @click="isLoginOpen = false" class="p-1.5 rounded-full bg-gray-100">
-                    <!-- 完全不圆，用了rounded-fullけど -->
+                <button @click="isLoginOpenStore.isLoginOpen = false" class="p-1.5 rounded-full w-8 h-8 bg-gray-100 hover:bg-gray-300">
+                    <!-- 完全不圆，用了rounded-fullけど，要加w,h才圆 -->
                     <el-icon :size="20">
                         <CloseBold />
                     </el-icon>
                 </button>
-                <el-button :icon="CloseBold" circle />
             </div>
 
 
@@ -34,29 +33,10 @@
 <script setup>
 import { ref } from "vue";
 import { CloseBold } from "@element-plus/icons-vue"
+import { useIsLoginOpenStore } from '../stores/isLoginOpen'
+const isLoginOpenStore = useIsLoginOpenStore()
+
 let isRegister = ref(true)
 
-const divRef = ref(null);
-let isDragging = false;
-let offset = { x: 0, y: 0 };
-
-const startDrag = (e) => {
-  isDragging = true;
-  offset.x = e.offsetX;
-  offset.y = e.offsetY;
-};
-
-const drag = (e) => {
-  if (isDragging) {
-    const x = e.clientX - offset.x;
-    const y = e.clientY - offset.y;
-    divRef.value.style.left = x + 'px';
-    divRef.value.style.top = y + 'px';
-  }
-};
-
-const stopDrag = () => {
-  isDragging = false;
-};
 
 </script>

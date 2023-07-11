@@ -7,9 +7,13 @@ def search_titles(request_Paper_ID):
     if Papers.objects.filter(Paper_ID = request_Paper_ID).exists():
         content = Papers.objects.get(Paper_ID = request_Paper_ID)
         record = {
-            "Paper_ID" : content.Paper_ID,
-            "Title_En" : content.Title_En,
-            "Title_Ja" : content.Title_Ja
+            "Paper_ID"   : content.Paper_ID,
+            "Title_En"   : content.Title_En,
+            "Title_Ja"   : content.Title_Ja,
+            "Authors"    : content.Authors,
+            "Categories" : content.Categories,
+            "Published"  : content.Published,
+            "Content_En" : content.Content_En
         }
         return record
     else:
@@ -24,11 +28,16 @@ def search_papers(request_Paper_ID):
         content.save()
 
         record = {
-            "Paper_ID" : content.Paper_ID,
-            "Title_En" : content.Title_En,
-            "Title_Ja" : content.Title_Ja,
-            "Content_En" : content.Content_En,
-            "Content_Ja" : content.Content_Ja,
+            "Paper_ID"      : content.Paper_ID,
+            "Title_En"      : content.Title_En,
+            "Title_Ja"      : content.Title_Ja,
+            "Authors"       : content.Authors,
+            "Categories"    : content.Categories,
+            "Published"     : content.Published,
+            "Content_En"    : content.Content_En,
+            "Content_Ja"    : content.Content_Ja,
+            "Content_plain" : content.Content_plain,
+            "Pdf_url"       : content.Pdf_url
         }
         return record
     else:
@@ -48,8 +57,13 @@ def add_title(title_data):
         Paper_ID = title_data.Paper_ID,
         Title_En = title_data.Title_En,
         Title_Ja = title_data.Title_Ja,
-        Content_En = None,
+        Categories = title_data.Categories,
+        Authors = title_data.Authors,
+        Pdf_url = title_data.Pdf_url,
+        Published = title_data.Published,
+        Content_En = title_data.Content_En,
         Content_Ja = None,
+        Content_plain = None,
         Search_num = 0
     )
     paper_record.save()
@@ -57,8 +71,8 @@ def add_title(title_data):
 # Add translated content
 def add_content(paper_data):
     paper_record = Papers.objects.get(Paper_ID = paper_data.Paper_ID)
-    paper_record.Content_En = paper_data.Content_En
     paper_record.Content_Ja = paper_data.Content_Ja
+    paper_record.Content_plain = paper_data.Content_plain
     paper_record.Search_num = 1
     paper_record.save()
 
@@ -94,4 +108,14 @@ def get_histry(request_User_ID):
 
 # def add_histry(read_data):
 
+
+
+
+# delete all data in the database (for supervisor)
+
+def delete():
+    Papers.objects.all().delete()
+    Keywords.objects.all().delete()
+    Profile.objects.all().delete()
+    Reads.objects.all().delete()
     

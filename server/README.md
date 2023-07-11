@@ -101,3 +101,35 @@ Output(json): {
     ] // 追加
     }
 ````
+
+````
+
+
+
+## CORSについて
+
+```
+pip install django-cors-headers
+```
+
+
+
+/settings.py
+
+```
+INSTALLED_APPS = [
+    ...
+    'corsheaders',
+    ...
+]
+
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', 
+    ...
+]
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True 
+```
+

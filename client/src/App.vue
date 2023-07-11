@@ -1,7 +1,7 @@
 <template>
   <router-view />
 
-  <AuthOverlay v-if="isLoginOpen" />
+  
 </template>
 
 <!-- <script>
@@ -11,7 +11,5 @@ export default {
 </script> -->
 
 <script setup>
-import { ref } from "vue";
 
-const isLoginOpen = ref(false)
 </script>
