@@ -27,7 +27,9 @@ def get_arxiv_data(query):
         # Categoryをわかりやすい名前に変えてリスト化 
         category_list = []
         for category in result.categories:
-            category_list.append(cat_dic[category])
+            # 辞書にあるカテゴリだけ名前を変換して追加
+            if (category in cat_dic.keys()):
+                category_list.append(cat_dic[category])
         # 改行の削除
         title = (result.title).replace('\n','')
         summary = (result.summary).replace('\n','')
@@ -45,7 +47,6 @@ def get_arxiv_data(query):
     return data_list
 
 # # Example usage
-# query = 'LLM cat:cs.CL'
 # json_list = get_arxiv_data(query)
 # print(type(json_list))
 # print(json_list)
