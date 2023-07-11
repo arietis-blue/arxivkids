@@ -23,6 +23,7 @@ contourpy=1.1.0=py311h5fe6e05_0
 cryptography=39.0.1=py311hf6deb26_0
 cycler=0.11.0=pyhd8ed1ab_0
 django=4.2=pypi_0
+django-cors-headers=4.0.0=pyhd8ed1ab_0
 django-filter=23.2=pyhd8ed1ab_0
 djangorestframework=3.14.0=pyhd8ed1ab_0
 docker-pycreds=0.4.0=py_0
