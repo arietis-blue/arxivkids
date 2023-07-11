@@ -8,6 +8,7 @@
       </el-header>
       <el-main>
         <el-scrollbar height="800px" class="mt-4">
+          {{ fivePapersStore.fivePapers }}
           <PaperRow />
           <PaperRow />
           <PaperRow />
@@ -28,9 +29,12 @@
 
 
 <script setup>
+import axios from 'axios'
 // import { ref } from "vue";
 import { useIsLoginOpenStore } from '../stores/isLoginOpen'
 const isLoginOpenStore = useIsLoginOpenStore()
+import { useFivePapersStore } from '../stores/fivePapers'
+const fivePapersStore = useFivePapersStore()
 
 import PaperRow from "../components/PaperRow.vue";
 import { Star } from "@element-plus/icons-vue"
