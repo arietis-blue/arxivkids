@@ -86,6 +86,7 @@ class Paper_detail(APIView):
         # Paper_IDを取得
         paper_id = search_paper_json["Paper_ID"]
         # 既に日本語付き論文があればそのまま取得、なければ空のjson(=まだ検索されたことのない論文)を返す。
+
         paper_plusJa_json = search_papers(paper_id)
 
         print(paper_plusJa_json)
@@ -94,6 +95,6 @@ class Paper_detail(APIView):
         if len(paper_plusJa_json)==0:
             paper_plusJa_json = search_paper.add_ja_title(search_paper_json)
             # データベースに追加
-            add_content(paper_plusJa_json)
+            # add_content_keywords(paper_plusJa_json)
         
         return Response(paper_plusJa_json)
