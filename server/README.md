@@ -42,7 +42,7 @@ http://127.0.0.1:8000/api/arxiv/
 にアクセスすると、入力したキーワード("search")による検索結果のjsonを返す。
 ````
 # 入出力(Post)
-input(json): {"search": "..."}
+input(json): {"Search": "..."}
 
 Output(jsonのリスト(検索結果×5)): [
     {

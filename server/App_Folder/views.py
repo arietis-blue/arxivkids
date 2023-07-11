@@ -15,11 +15,11 @@ search = {
 class Arxiv_Search(APIView):
     def get(self, request):
         # return Response("OK", status=status.HTTP_200_OK)
-        return Response(search_paper.main(search["search"]))
+        return Response(search_paper.main(search["Search"]))
     
     def post(self, request, *args, **kwargs):
         search_word = request.data
-        return Response(search_paper.main(search_word['search']))
+        return Response(search_paper.main(search_word['Search']))
 
 # Paper_detailのgetメソッドを用いたDebug用  
 contents = {
