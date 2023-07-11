@@ -1,5 +1,6 @@
 <template>
   <TopNav />
+  <AuthOverlay v-if="isLoginOpenStore.isLoginOpen" />
   <div class="common-layout">
     <el-container>
       <el-header>
@@ -27,6 +28,10 @@
 
 
 <script setup>
+// import { ref } from "vue";
+import { useIsLoginOpenStore } from '../stores/isLoginOpen'
+const isLoginOpenStore = useIsLoginOpenStore()
+
 import PaperRow from "../components/PaperRow.vue";
 import { Star } from "@element-plus/icons-vue"
 </script>
