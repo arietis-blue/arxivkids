@@ -11,4 +11,19 @@ def main(query):
     for i,paper in enumerate(paper_list):
         paper["Title_Ja"] = title_ja_list[i]
     return(paper_list)
+
+def get_papers(query):
+    # arxivから論文の取得
+    paper_list = get_arxiv_data(query)
+    return paper_list
+
+# 論文のjsonのリストを受け取り、日本語のタイトル
+def add_ja_title(paper_list):
+    title_list = [paper["Title_En"] for paper in paper_list]
+    # タイトルをdeeplで翻訳
+    title_ja_list = translate_ja_list(title_list)
+    # "Title_Ja"として追加して返す
+    for i,paper in enumerate(paper_list):
+        paper["Title_Ja"] = title_ja_list[i]
+    return(paper_list)
 # print(main('LLM cat:cs.CL'))
