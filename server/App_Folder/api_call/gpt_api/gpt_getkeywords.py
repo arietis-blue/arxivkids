@@ -5,14 +5,29 @@ import openai
 from pathlib import Path
 import json
 import time
+# langchainを用いた型エラー訂正のためのライブラリ群
+from langchain.output_parsers import PydanticOutputParser
+from langchain.chat_models import ChatOpenAI
+from langchain.output_parsers import OutputFixingParser
+from pydantic import BaseModel
+from typing import List
 
 
 load_dotenv(Path(__file__).parent.parent.joinpath(".env"))
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
+# 型エラー訂正のためのテンプレートの型
+class Keyword(BaseModel):
+    Keyword: str
+    Description: str
+
+class Keywords(BaseModel):
+  list: List[Keyword]
+  
 # Textを受け取りキーワードと説明文のリストを返す
 def keywords(content,category):
   time_sta = time.time()
+  # gptのfunction機能で指定する返り値の型
   schema = {
   "type": "object",
   "properties": {
@@ -38,27 +53,28 @@ def keywords(content,category):
   category_prompt = ",\n".join(category)
   
   prompt = """
-           Task: I would like to acquire and explain technical terms so that beginners can understand the following paper. Please extract five technical term. And create a description for that keyword in Japanese. However, please add an explanation of the word itself as well as how it is used in the abstract.
+           Task: Please extract five technical term and create a description for that keyword in Japanese. I would like to acquire and explain technical terms so that beginners can understand the following paper. Please add an explanation of the word itself as well as how it is used in the abstract.
            Limit: Each description must be written in around 200 Japanese characters.
            Format example:
            [
              {
-               'Keyword':"keyword_1_title",
+               'Keyword':"keyword_1_name",
                'Description':"keyword_1_description
              },
             {
-               'Keyword':"keyword_2_title",
+               'Keyword':"keyword_2_name",
                'Description':"keyword_2_description
              },
             {
-               'Keyword':"keyword_3_title",
+               'Keyword':"keyword_3_name",
                'Description':"keyword_3_description
              }
             ,,,
             {
-               'Keyword':"keyword_n_title",
+               'Keyword':"keyword_n_name",
                'Description':"keyword_n_description
              }           ]
+          Paper abstract:
            """\
           + content
 
@@ -75,16 +91,27 @@ def keywords(content,category):
     temperature=0,
   )
   try:
-    result = json.loads(completion.choices[0].message.function_call.arguments)
+    result = json.loads((completion.choices[0].message.function_call.arguments))
   except:
-    print("error")
-    result = "gpt error"
-    print(completion.choices[0].message.function_call.arguments)
-    
+    # jsonでない場合のエラー処理→langchainのParserを用いて出力の型を調整
+    try:
+      print("json correction")
+      parser =  PydanticOutputParser(pydantic_object=Keywords)
+      new_parser = OutputFixingParser.from_llm(parser=parser, llm=ChatOpenAI())
+      result = (new_parser.parse(completion.choices[0].message.function_call.arguments)).json()
+      result = json.loads(result)
+    # それでもエラーが起きたらエラーを返す
+    except:
+      print("error")
+      result = {
+            "Keyword": "Error",
+            "Description": "Error in Extracting Keyword"
+        }
   time_end = time.time()
   # 経過時間（秒）
   tim = time_end- time_sta
   print(tim)
+  print(result)
   return(result)
 
 # Example Usage
