@@ -41,18 +41,54 @@ http://127.0.0.1:8000
 http://127.0.0.1:8000/api/arxiv/
 にアクセスすると、入力したキーワード("search")による検索結果のjsonを返す。
 ````
-# 入出力例
-input(jsonのリスト): [{"search"}]
+# 入出力(Post)
+input(json): {"search": "..."}
 
-Output(jsonのリスト): [{"ID", "Title_En", "Content_En", "Categories", "authors", "Pdf_url","published", "Title_Ja"}]
+Output(jsonのリスト(検索結果×5)): [
+    {
+        "ID": "...", 
+        "Title_En": "...", 
+        "Content_En": "...", 
+        "Categories": "...", 
+        "authors": "...", 
+        "Pdf_url": "...", 
+        "published": "...", 
+        "Title_Ja": "..."
+    }
+    {~}
+    {~}
+    {~}
+    {~}
+]
 ````
 
 http://127.0.0.1:8000/api/paper
 にアクセスすると、入力したjsonファイルに、DeepLを用いてAbstractの日本語訳と平易な日本語を追加
 
 ````
-# 入出力例
-input(jsonのリスト): [{"ID", "Title_En", "Content_En", "Categories", "authors", "Pdf_url","published", "Title_Ja"}]
+# 入出力(Post)
+input(json): {
+    "ID": "...", 
+    "Title_En": "...",
+    "Content_En": "...", 
+    "Categories": "...", 
+    "authors": "...", 
+    "Pdf_url": "...", 
+    "published": "...", 
+    "Title_Ja": "..."
+}
 
-Output(jsonのリスト): [{"ID", "Title_En", "Content_En", "Categories", "authors", "Pdf_url","published", "Title_Ja", "Content_Ja", "Content_plain"}]
+Output(json): {
+    "ID": "...", 
+    "Title_En": "...",
+    "Content_En": "...", 
+    "Categories": "...", 
+    "authors": "...", 
+    "Pdf_url": "...", 
+    "published": "...", 
+    "Title_Ja": "..."
+    "Content_Ja": "...", //追加
+    "Content_plain": "...", //追加
+    "Keyword": "..." //追加
+    }
 ````
