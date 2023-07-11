@@ -13,7 +13,7 @@ def main(paper_json):
     paper_json["Content_plain"] = plain_content
     # キーワードの取得
     # 日本語訳に対してキーワードの取得
-    keywords_json = keywords(content_ja)
+    keywords_json = keywords(content_ja,paper_json["Categories"])
     keyword_list = keywords_json["list"]
     paper_json["Keywords"] = keyword_list
     return paper_json
