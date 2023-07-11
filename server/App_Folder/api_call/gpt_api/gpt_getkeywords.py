@@ -16,26 +16,61 @@ def keywords(content):
   schema = {
   "type": "object",
   "properties": {
-       "keywords_list": {
+       "list": {
       "type": "array",
-      "description": "Important Japanese key words in the abstract.",
-      "items": { "type": "string" }
-    },
-    "keywords_description_list": {
-      "type": "string",
-      "description": "The explanation of Japanese key words."
+      "description": "Important Japanese keywords and their description.",
+      "items": { 
+          "keyword":{
+            "keyword_title":{
+              "type":"string",
+              "description":"keyword name"
+            },
+            "keyword_description":{
+              "type":"string",
+              "description":"A 100-word sentence explaining the meaning of the KEYWORD"
+            },
+          }
+                }
     }
   },
-  "required": ["keywords_list","keywords_description_list"]
-}
+  "required": ["keyword_title","keyword_description"]
+}  
+  
+  
+  prompt = """
+           Task: Please extract five technical terms about following paper and its description in Japanese. The description should be approximately 200 Japanese characters.
+           Format example:
+           [
+             {
+               'keyword_title':"keyword_1_title",
+               'keyword_description':"keyword_1_description
+             },
+            {
+               'keyword_title':"keyword_2_title",
+               'keyword_description':"keyword_2_description
+             },
+            {
+               'keyword_title':"keyword_3_title",
+               'keyword_description':"keyword_3_description
+             }
+            ,,,
+            {
+               'keyword_title':"keyword_n_title",
+               'keyword_description':"keyword_n_description
+             }           ]
+           """\
+          + content
+
+#出力
+           
   completion = openai.ChatCompletion.create(
     model="gpt-3.5-turbo-0613",
     messages=[
       {"role": "system", "content": "You are an expert in the field of this paper."},
-      {"role": "user", "content": "Please extract five technical terms that are necessary to understand the following paper and prepare a description of them in Japanese.\n"+ content}
+      {"role": "user", "content": prompt}
     ],
-    functions=[{"name": "set_keywords", "parameters": schema}],
-    function_call={"name": "set_keywords"},
+    functions=[{"name": "set_keywords_and_desctiption", "parameters": schema}],
+    function_call={"name": "set_keywords_and_desctiption"},
     temperature=0,
   )
   try:
@@ -52,7 +87,7 @@ def keywords(content):
   print(result)
   return(result)
 
-# # Example Usage
+# Example Usage
 # Text = 'D-AgreeはBERTを用いたオンライン議論プラットフォームです。ファシリテーションエージェントが議論中の投稿をIBIS構造に基づき分類し、合意形成のための適切なファシリテーションを行います'
 # keywords(Text)
 
