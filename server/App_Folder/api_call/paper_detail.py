@@ -11,8 +11,9 @@ def main(paper_json):
     # 平易な言葉に言い換え
     plain_content = paraphrase(content_ja)
     paper_json["Content_plain"] = plain_content
-    # # キーワードの取得
-    keywords_json = keywords(plain_content)
+    # キーワードの取得
+    # 日本語訳に対してキーワードの取得
+    keywords_json = keywords(content_ja)
     keyword_list = keywords_json["list"]
     paper_json["Keywords"] = keyword_list
     return paper_json
