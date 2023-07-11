@@ -49,32 +49,32 @@ Output(jsonのリスト(検索結果×5)): [
         "ID": "...", 
         "Title_En": "...", 
         "Content_En": "...", 
-        "Categories": "...", 
-        "authors": "...", 
+        "Categories": ["...", "...", ...],
+        "Authors": ["...", "...", ...], 
         "Pdf_url": "...", 
-        "published": "...", 
+        "Published": "...", 
         "Title_Ja": "..."
-    }
-    {~}
-    {~}
-    {~}
+    },
+    {~},
+    {~},
+    {~},
     {~}
 ]
 ````
 
 http://127.0.0.1:8000/api/paper
-にアクセスすると、入力したjsonファイルに、DeepLを用いてAbstractの日本語訳と平易な日本語を追加
+にアクセスすると、入力したjsonファイルに、DeepLを用いてAbstractの日本語訳と平易な日本語、キーワードを追加
 
 ````
 # 入出力(Post)
 input(json): {
-    "ID": "...", 
+    "Paper_ID": "...", 
     "Title_En": "...",
     "Content_En": "...", 
-    "Categories": "...", 
-    "authors": "...", 
+    "Categories": ["...", "...", ...], 
+    "Authors": ["...", "...", ...], 
     "Pdf_url": "...", 
-    "published": "...", 
+    "Published": "...", 
     "Title_Ja": "..."
 }
 
@@ -82,13 +82,22 @@ Output(json): {
     "ID": "...", 
     "Title_En": "...",
     "Content_En": "...", 
-    "Categories": "...", 
-    "authors": "...", 
+    "Categories": ["...", "...", ...], 
+    "Authors": ["...", "...", ...], 
     "Pdf_url": "...", 
-    "published": "...", 
+    "Published": "...", 
     "Title_Ja": "..."
-    "Content_Ja": "...", //追加
-    "Content_plain": "...", //追加
-    "Keyword": "..." //追加
+    "Content_Ja": "...", // 追加
+    "Content_plain": "...", // 追加
+    "Keywords": [
+        {
+            "Keyword": "...",
+            "Description": "..."
+        },
+        {...},
+        {...},
+        {...},
+        {...}
+    ] // 追加
     }
 ````
