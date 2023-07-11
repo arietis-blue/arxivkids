@@ -54,14 +54,14 @@ def search_keywords(request_Paper_ID):
 # Add translated title
 def add_title(title_data):  
     paper_record = Papers(
-        Paper_ID = title_data.Paper_ID,
-        Title_En = title_data.Title_En,
-        Title_Ja = title_data.Title_Ja,
-        Categories = title_data.Categories,
-        Authors = title_data.Authors,
-        Pdf_url = title_data.Pdf_url,
-        Published = title_data.Published,
-        Content_En = title_data.Content_En,
+        Paper_ID = title_data["Paper_ID"],
+        Title_En = title_data["Title_En"],
+        Title_Ja = title_data["Title_Ja"],
+        Categories = title_data["Categories"],
+        Authors = title_data["Authors"],
+        Pdf_url = title_data["Pdf_url"],
+        Published = title_data["Published"],
+        Content_En = title_data["Content_En"],
         Content_Ja = None,
         Content_plain = None,
         Search_num = 0
@@ -71,8 +71,8 @@ def add_title(title_data):
 # Add translated content
 def add_content(paper_data):
     paper_record = Papers.objects.get(Paper_ID = paper_data.Paper_ID)
-    paper_record.Content_Ja = paper_data.Content_Ja
-    paper_record.Content_plain = paper_data.Content_plain
+    paper_record.Content_Ja = paper_data["Content_Ja"]
+    paper_record.Content_plain = paper_data["Content_plain"]
     paper_record.Search_num = 1
     paper_record.save()
 
@@ -82,9 +82,9 @@ def add_content(paper_data):
 # Register
 def add_user(user_data):
     user_record = Profile(
-        User_ID = user_data.User_ID,
-        Name = user_data.Name,
-        Pass = user_data.Pass
+        User_ID = user_data["User_ID"],
+        Name = user_data["Name"],
+        Pass = user_data["Pass"]
     )
     user_record.save()
 
@@ -95,9 +95,9 @@ def get_histry(request_User_ID):
         contents = Reads.objects.filter(Reader_ID = request_User_ID)
         records = {
             "Histries" : [{
-                "Paper_ID" : content.Paper_ID,
-                "Title_En" : content.Title_En,
-                "Title_Ja" : content.Title_Ja
+                "Paper_ID" : content["Paper_ID"],
+                "Title_En" : content["Title_En"],
+                "Title_Ja" : content["Title_Ja"]
         }
         for content in contents
         ]}
@@ -118,4 +118,3 @@ def delete():
     Keywords.objects.all().delete()
     Profile.objects.all().delete()
     Reads.objects.all().delete()
-    
