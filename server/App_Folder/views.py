@@ -31,16 +31,16 @@ class Arxiv_Search(APIView):
         for paper in search_result_list:
             # Paper_IDを取得
             paper_id = paper["Paper_ID"]
+
             # 既に論文があればそのまま取得、なければ空のjson(=まだ検索されたことのない論文)を返す。
             paper_json = search_titles(paper_id)
 
-            print(paper_json)
-
             # 空のjson(=まだ検索されたことのない論文)ならば、DeepLを用いて日本語を追加したjsonを返す。
             if len(paper_json)==0:
+
                 paper_json = search_paper.add_ja_title(paper)
                 # データベースに追加
-                # add_title(paper_json)
+                add_title(paper_json)
             
             # リストに追加
             search_list.append(paper_json)
@@ -86,10 +86,8 @@ class Paper_detail(APIView):
         # Paper_IDを取得
         paper_id = search_paper_json["Paper_ID"]
         # 既に日本語付き論文があればそのまま取得、なければ空のjson(=まだ検索されたことのない論文)を返す。
-
         paper_plusJa_json = search_papers(paper_id)
 
-        print(paper_plusJa_json)
 
         # 空のjson(=まだ検索されたことのない論文)ならば、DeepLを用いて日本語の概要を追加したjsonを返す。
         if len(paper_plusJa_json)==0:
