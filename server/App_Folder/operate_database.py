@@ -7,13 +7,13 @@ def search_titles(request_Paper_ID):
     if Papers.objects.filter(Paper_ID = request_Paper_ID).exists():
         content = Papers.objects.get(Paper_ID = request_Paper_ID)
         record = {
-            "Paper_ID"   : content["Paper_ID"],
-            "Title_En"   : content["Title_En"],
-            "Title_Ja"   : content["Title_Ja"],
-            "Authors"    : content["Authors"].split(","),
-            "Categories" : content["Categories"].split(","),
-            "Published"  : content["Published"],
-            "Content_En" : content["Content_En"]
+            "Paper_ID"   : content.Paper_ID,
+            "Title_En"   : content.Title_En,
+            "Title_Ja"   : content.Title_Ja,
+            "Authors"    : content.Authors.split(","),
+            "Categories" : content.Categories.split(","),
+            "Published"  : content.Published,
+            "Content_En" : content.Content_En
         }
         return record
     else:
@@ -21,8 +21,10 @@ def search_titles(request_Paper_ID):
 
 # Search Translated Content and Keywords    for views.py
 def search_papers(request_Paper_ID):
-    if not Papers.objects.filter(Paper_ID = request_Paper_ID).first()["Content_Ja"] is None:
+
+    if not Papers.objects.get(Paper_ID = request_Paper_ID).Content_Ja is None:
         content = Papers.objects.get(Paper_ID = request_Paper_ID)
+
         # Add 1 to Search_num
         content["Search_num"] += 1
         content.save()
