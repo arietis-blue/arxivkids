@@ -34,8 +34,6 @@ class Arxiv_Search(APIView):
             # 既に論文があればそのまま取得、なければ空のjson(=まだ検索されたことのない論文)を返す。
             paper_json = search_titles(paper_id)
 
-            print(paper_json)
-
             # 空のjson(=まだ検索されたことのない論文)ならば、DeepLを用いて日本語を追加したjsonを返す。
             if len(paper_json)==0:
                 paper_json = search_paper.add_ja_title(paper)
@@ -89,7 +87,6 @@ class Paper_detail(APIView):
 
         paper_plusJa_json = search_papers(paper_id)
 
-        print(paper_plusJa_json)
 
         # 空のjson(=まだ検索されたことのない論文)ならば、DeepLを用いて日本語の概要を追加したjsonを返す。
         if len(paper_plusJa_json)==0:
