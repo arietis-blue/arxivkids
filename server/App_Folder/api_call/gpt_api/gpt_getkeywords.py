@@ -88,7 +88,7 @@ def keywords(content,category):
     ],
     functions=[{"name": "set_keywords_and_desctiption", "parameters": schema}],
     function_call={"name": "set_keywords_and_desctiption"},
-    temperature=0,
+    temperature=0.5,
   )
   try:
     result = json.loads((completion.choices[0].message.function_call.arguments))
