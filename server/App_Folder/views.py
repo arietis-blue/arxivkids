@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .api_call import search_paper, paper_detail
-from .operate_database import search_titles, search_papers, add_title, add_content
+from .operate_database import search_titles, search_papers, add_title, add_content_keywords, delete
 
 from pdb import set_trace
 
@@ -91,8 +91,10 @@ class Paper_detail(APIView):
 
         # 空のjson(=まだ検索されたことのない論文)ならば、DeepLを用いて日本語の概要を追加したjsonを返す。
         if len(paper_plusJa_json)==0:
-            paper_plusJa_json = search_paper.add_ja_title(search_paper_json)
+            paper_plusJa_json = paper_detail.main(search_paper_json)
+
             # データベースに追加
-            # add_content_keywords(paper_plusJa_json)
+            add_content_keywords(paper_plusJa_json)
         
         return Response(paper_plusJa_json)
+    
