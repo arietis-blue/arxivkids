@@ -222,9 +222,7 @@ def keywords_steps(content,category):
           Paper abstract:
            """\
           + content
-#出力
-           
-  completion = openai.ChatCompletion.create(
+  completion_title = openai.ChatCompletion.create(
     model="gpt-3.5-turbo-0613",
     messages=[
       {"role": "system", "content": "You are an expert in the following academic areas\n" + category_prompt},
@@ -234,11 +232,63 @@ def keywords_steps(content,category):
     function_call={"name": "set_keywords"},
     temperature=0,
   )
+  result_str_title = (completion_title.choices[0].message.function_call.arguments)
+  result_title = json.loads(result_str_title)
+  print(result_title['list'])
+#出力
+  description_schema = {
+  "type": "object",
+  "properties": {
+       "list": {
+      "type": "array",
+      "description": "Description of Keywords",
+      "items": { 
+            "Description":{
+              "type":"string",
+              "description":"keyword description"
+            },
+          }
+    }
+  },
+  "required": ["Description"]
+  }       
+  prompt = """
+           Task: Please make descriptions for each five technical terms in Japanese.
+           Format example:
+           {'list':[
+             {
+               'Description':"keyword_1_description"
+             },
+            {
+               'Description':"keyword_2_description"
+             },
+            {
+               'Description':"keyword_3_description"
+             }
+            ,,,
+            {
+               'Description':"keyword_n_description"
+             }           ]}
+          Keywords_list:
+           """\
+          + result_str_title
+  completion_description = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo-0613",
+    messages=[
+      {"role": "system", "content": "You are an expert in the following academic areas\n" + category_prompt},
+      {"role": "user", "content": prompt}
+    ],
+    functions=[{"name": "set_keywords_description", "parameters": description_schema}],
+    function_call={"name": "set_keywords_description"},
+    temperature=0,
+  )
+  
   try:
-    result_str = (completion.choices[0].message.function_call.arguments)
-    result = json.loads(result_str)
-    print(result['list'])
+    result_str_description = (completion_description.choices[0].message.function_call.arguments)
+    result_description = json.loads(result_str_description)
+    print(result_description['list'])
     # print(result['list'])
+    return 
     if(check_output_type(result['list'])):
       None
     else:
@@ -254,7 +304,7 @@ def keywords_steps(content,category):
   tim = time_end- time_sta
   print(tim)
   # print(result)
-  return(result)
+  return(result_description)
 
 # 出力の型が正しいかチェックする
 def check_output_type(json_list):
@@ -264,10 +314,10 @@ def check_output_type(json_list):
     return True
 
 # Example Usage
-# Text = '自律走行車の知覚・制御システムは、科学的にも産業的にも活発な研究分野である。このような機能を実現するには、適切なアルゴリズムと適切なコンピューティングプラットフォームが必要である。本論文では、MultiTaskV3detection-segmentationネットワークを、単一のアーキテクチャで両方の機能を実行できる知覚システムの基礎として使用した。このネットワークは適切に訓練され、定量化され、AMD Xilinx Kria KV260 Vision AIembeddedプラットフォーム上に実装された。このデバイスを使用することで、計算の並列化と高速化が可能になった。さらに、システム全体の消費電力は、CPUベースの実装に比べて比較的小さく（弱いCPUの最低消費電力55ワットに対し、平均5ワット）、プラットフォームのサイズが小さい（119mm×140mm×36mm）ため、利用可能なスペースが限られている機器でも使用できます。また、物体検出ではmAP（平均平均精度）の97％以上、画像セグメンテーションではmIoU（平均交差和）の90％以上の精度を達成している。本稿では、提案されたソリューションを模擬都市でテストするために使用されたMecanumホイール・ビークルの設計についても詳述する'
-# category = [
-#         "Computer Vision and Pattern Recognition",
-#         "Image and Video Processing"
-#     ]
-# output = keywords(Text,category)
-# print(output)
+Text = '自律走行車の知覚・制御システムは、科学的にも産業的にも活発な研究分野である。このような機能を実現するには、適切なアルゴリズムと適切なコンピューティングプラットフォームが必要である。本論文では、MultiTaskV3detection-segmentationネットワークを、単一のアーキテクチャで両方の機能を実行できる知覚システムの基礎として使用した。このネットワークは適切に訓練され、定量化され、AMD Xilinx Kria KV260 Vision AIembeddedプラットフォーム上に実装された。このデバイスを使用することで、計算の並列化と高速化が可能になった。さらに、システム全体の消費電力は、CPUベースの実装に比べて比較的小さく（弱いCPUの最低消費電力55ワットに対し、平均5ワット）、プラットフォームのサイズが小さい（119mm×140mm×36mm）ため、利用可能なスペースが限られている機器でも使用できます。また、物体検出ではmAP（平均平均精度）の97％以上、画像セグメンテーションではmIoU（平均交差和）の90％以上の精度を達成している。本稿では、提案されたソリューションを模擬都市でテストするために使用されたMecanumホイール・ビークルの設計についても詳述する'
+category = [
+        "Computer Vision and Pattern Recognition",
+        "Image and Video Processing"
+    ]
+output = keywords(Text,category)
+print(output)
