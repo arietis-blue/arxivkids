@@ -51,11 +51,11 @@
             </div>
         </div>
 
-        <PaperRow author="ABCDEF" />
+        <!-- <PaperRow author="ABCDEF" /> -->
 
     </div>
 </template>
 
 <script setup>
-import PaperRow from "../components/PaperRow.vue";
+// import PaperRow from "../components/PaperRow.vue";
 </script>

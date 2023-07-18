@@ -12,21 +12,41 @@
       <el-main>
         <el-scrollbar height="800px" class="mt-4">
 
-          {{ fivePapersStore.fivePapers }}
-
-          <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
-            class="w-1/5 h-[225px]  rounded-xl shadow-2xl  hover:ring-2 ring-gray-500"
-            :style="{ backgroundColor: getRandomLightColor() }"
-          >
-          <a :href="paper.Pdf_url">pdf</a>
+          <div v-if="waitingArxiv">
+            <!-- <el-progress :percentage="100" status="warning" :indeterminate="true" :duration="1" /> -->
+            <el-skeleton :rows="30" animated />
           </div>
           
-          <div class="flex">
+          <!-- {{ fivePapersStore.fivePapers}} -->
+
+          <!-- <div class="flex justify-center"> 上下两个的区别好好体会，怎么居中，居中的是什么 -->
+          <div class="grid justify-items-center space-y-6">
+            <!-- v-for显示10篇论文 -->
+            <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
+              class="w-2/3 my-2"
+            >
+              <PaperRow
+                :Paper_ID="paper.Paper_ID"
+                :Title_En="paper.Title_En"
+                :Title_Ja="paper.Title_Ja"
+                :Content_En="paper.Content_En"
+                :Pdf_url="paper.Pdf_url"
+                :Published="paper.Published"
+                :Authors="paper.Authors"
+              />
+            </div>
+          </div>
+          
+          
+
+
+
+          <!-- <div class="flex">
             <PaperRow />
             <router-link to="login" class="w-full">
               <el-button type="warning" :icon="Star" circle />
             </router-link>
-          </div>
+          </div> -->
 
 
         </el-scrollbar>
@@ -54,12 +74,14 @@ const { isLoginOpen } = storeToRefs(isLoginOpenStore)
 import { useFivePapersStore } from '../stores/fivePapers'
 const fivePapersStore = useFivePapersStore()
 
+import { useWaitingStore } from '../stores/waiting'
+const waitingStore = useWaitingStore()
+const { waitingArxiv } = storeToRefs(waitingStore)
+
 import PaperRow from "../components/PaperRow.vue";
 import { Star } from "@element-plus/icons-vue"
 
-function getRandomLightColor() {
-  return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
-}
+
 
 const goDetailPaper = () => {
   router.push('/detailpaper')
