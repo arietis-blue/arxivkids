@@ -6,20 +6,28 @@
 
 
       <div class="hidden md:flex items-center bg-[#F1F1F2] p-1 rounded-full max-w-[580px] w-full ">
-        <input type="text" class="w-full pl-3 my-2 bg-transparent placeholder-[#838383] text-[15px] focus:outline-none"
-          v-model="searchContent"
-          placeholder="Search papers">
+        <input type="text" class="w-full pl-3 my-2 bg-transparent placeholder-[#838383] text-[15px] focus:outline-none text-black"
+          v-model="searchContent" placeholder="Search papers">
         <div class="px-3 py-1 flex items-center border-l border-l-gray-300">
-          <el-button :icon="Search" circle @click="getFivePapers"/>
+          <el-button :icon="Search" circle @click="getFivePapers" />
         </div>
       </div>
 
 
       <div class="flex items-center justify-end gap-3 min-w-[275px] max-w-[320px] w-full">
+        <!-- dark mode -->
+        <div class="flex items-center mr-5">
+          <button @click="toggleDark()" class="mr-1">
+            <!-- <i inline-block align-middle i="dark:carbon-moon carbon-sun" /> -->
+            <span class="">{{ isDark ? 'Dark' : 'Light' }}</span>
+          </button>
+          <el-switch v-model="isDark" class="" style="--el-switch-on-color: #2F4F4F; --el-switch-off-color: #D3D3D3"
+            inline-prompt :active-icon="Sunny" :inactive-icon="Moon" size="large" />
+        </div>
+
         <div v-if="!isLogined" class="flex items-center">
           <!-- <button @click="$generalStore.isLoginOpen = true" -->
-          <button
-            @click="isLoginOpenStore.isLoginOpen = true; isLogined = true"
+          <button @click="isLoginOpenStore.isLoginOpen = true; isLogined = true"
             class="flex items-center bg-red-600 hover:bg-red-400 text-white font-semibold border rounded-md px-3 py-[6px] ring-2 ring-gray-300 hover:ring-4 hover:ring-red-300">
             <span class="mx-2 font-medium ">Log in</span>
           </button>
@@ -60,6 +68,7 @@
 
 <script setup>
 import axios from 'axios'
+// import '../mock/arxiv'
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Search } from "@element-plus/icons-vue"
@@ -68,6 +77,11 @@ import { Search } from "@element-plus/icons-vue"
 import StarOutlineIcon from "vue-material-design-icons/StarOutline.vue";
 import AccountIcon from "vue-material-design-icons/Account.vue";
 import LogoutVariantIcon from "vue-material-design-icons/LogoutVariant.vue";
+
+import { useDark, useToggle } from '@vueuse/core'
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
+import { Sunny, Moon } from '@element-plus/icons-vue'
 
 import { useIsLoginOpenStore } from '../stores/isLoginOpen'
 const isLoginOpenStore = useIsLoginOpenStore()
@@ -88,14 +102,27 @@ const searchContent = ref("")
 const getFivePapers = () => {
   console.log(searchContent)
   //别忘了script要value，之前"Search": searchContent就错了  有问题console.log()检查
-  axios.post('http://127.0.0.1:8000/api/arxiv/', {"Search": searchContent.value})
-    .then(res => {
-      console.log(res.data)
-      fivePapersStore.fivePapers = res.data
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+  // axios.post('http://127.0.0.1:8000/api/arxiv/', { "Search": searchContent.value })
+  //   .then(res => {
+  //     console.log(res.data)
+  //     fivePapersStore.fivePapers = res.data //pinia的东西不用.value
+  //   })
+  //   .catch((err) => {
+  //     console.log(err)
+  //   })
+  axios.get('http://localhost:3000/arxiv', {
+  // 请求体数据（可选）
+  "Search": searchContent.value
+})
+  .then(response => {
+    // 处理成功响应
+    console.log(response.data);
+    fivePapersStore.fivePapers = response.data
+  })
+  .catch(error => {
+    // 处理请求错误
+    console.error(error);
+  })
 }
 
 const goLogin = () => {
