@@ -4,7 +4,8 @@ import './style.css'
 import App from './App.vue'
 import router from './router'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-// import './mock/paper'
+import 'element-plus/theme-chalk/dark/css-vars.css'
+
 
 const pinia = createPinia()
 const app = createApp(App)
