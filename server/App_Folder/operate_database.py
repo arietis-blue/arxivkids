@@ -23,6 +23,7 @@ def search_rank():
             "rank" : record
         }
         return rank
+    
     else:
         return{}
 
