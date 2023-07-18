@@ -92,27 +92,58 @@ def keywords(content,category):
   )
   try:
     result = json.loads((completion.choices[0].message.function_call.arguments))
+    
+    # 悪い例
+    # result =""" {'list':[
+    #   {'Keyword': 'keyword_1_name'},
+    #   {'Keyword': 'keyword_2_name'},
+    #   {'Keyword': 'keyword_3_name'},
+    #   # ... 追加の要素
+    #   {'Keyword': 'keyword_n_name'}
+    # ]}"""
+    # print(result['list'])
+    if(check_output_type(result['list'])):
+      None
+    else:
+      # jsonの型が正しくない場合はエラーを発生させ、型修正を行う
+      raise Exception
   except:
-    # jsonでない場合のエラー処理→langchainのParserを用いて出力の型を調整
-    try:
-      print("json correction")
-      parser =  PydanticOutputParser(pydantic_object=Keywords)
-      new_parser = OutputFixingParser.from_llm(parser=parser, llm=ChatOpenAI())
-      result = (new_parser.parse(completion.choices[0].message.function_call.arguments)).json()
-      result = json.loads(result)
-    # それでもエラーが起きたらエラーを返す
-    except:
-      print("error")
-      result = {
-            "Keyword": "Error",
-            "Description": "Error in Extracting Keyword"
-        }
+    # エラー処理→langchainのParserを用いて出力の型を調整
+    # try:
+    print("json correction")
+    result =  {
+      'list':[{
+            "Keyword": "GPT Error",
+            "Description": "GPT Error in Extracting Keyword. Please retry to get keyword."
+      }]}
+    
+    # parser =  PydanticOutputParser(pydantic_object=Keywords)
+    # new_parser = OutputFixingParser.from_llm(parser=parser, llm=ChatOpenAI())
+    # print(result)
+    # correct_result = (new_parser.parse(result))
+    # print(correct_result)
+    # result = json.loads(correct_result)
+    # # それでもエラーが起きたらエラーを返す
+    # # except:
+    # #   print("error")
+    # #   result = {
+    # #         "Keyword": "GPT Error",
+    # #         "Description": "GPT Error in Extracting Keyword. Please retry to get keyword."
+    # #     }
+      
   time_end = time.time()
   # 経過時間（秒）
   tim = time_end- time_sta
   print(tim)
-  print(result)
+  # print(result)
   return(result)
+
+# 出力の型が正しいかチェックする
+def check_output_type(json_list):
+    for item in json_list:
+        if 'Keyword' not in item or 'Description' not in item:
+            return False
+    return True
 
 # Example Usage
 # Text = '我々は、高レベルのコミュニケーションと低レベルのパスプランニングの両方に、事前に訓練された大規模言語モデル（LLM）の力を活用する、マルチロボット協調のための新しいアプローチを提案する。ロボットは、タスク戦略を議論し、集団的に推論するためにLLMを装備している。LLMはサブタスク計画とタスク空間ウェイポイント経路を生成し、マルチアームモーションプランナーにより軌道計画を加速する。また、衝突チェックのような環境からのフィードバックを提供し、LLMエージェントがコンテキスト内で計画とウェイポイントを改善するように促す。評価のために、我々はRoCoBenchを導入する。RoCoBenchは、エージェントの表現と推論のためのテキストのみのデータセットとともに、幅広いマルチロボット協調シナリオをカバーする6タスクベンチマークである。RoCoBenchの全てのタスクにおいて高い成功率を達成し、タスクセマンティクスの変化にも適応する。我々のダイアログ設定は高い解釈性と柔軟性を提供し、実世界の実験では、RoCoは簡単にヒューマンインザループを組み込むことができ、ユーザはロボットエージェントとコミュニケーションし、協力してタスクを完了することができる。ビデオとコードはプロジェクトのウェブサイトhttps://project-roco.github.io'
@@ -123,4 +154,3 @@ def keywords(content,category):
 #     ]
 # output = keywords(Text,category)
 # print(output)
-
