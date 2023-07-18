@@ -20,7 +20,7 @@ def search_rank():
             }
             record.append(rec)
         rank = {
-            rank : rec
+            "rank" : rec
         }
         return rank
     else:
@@ -149,11 +149,11 @@ def add_user(user_data):
 
 
 # Search User's history
-def get_histry(request_User_ID):
+def get_history(request_User_ID):
     if Reads.objects.get(Reader_ID = request_User_ID).exists():
         contents = Reads.objects.filter(Reader_ID = request_User_ID)
         recs = []
-        for i in contents:
+        for _ in contents:
             p_id = contents.Paper_ID
             paper_detail = Papers.objects.get(Paper_ID = p_id)
             record = {
@@ -163,7 +163,7 @@ def get_histry(request_User_ID):
             }
             recs.append(record)
         records = {
-            "Histries" : recs
+            "Histories" : recs
         }
         return records
     else:
