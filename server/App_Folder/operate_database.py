@@ -15,7 +15,8 @@ def search_rank():
                 "Authors"    : content.Authors.split(","),
                 "Categories" : content.Categories.split(","),
                 "Published"  : content.Published,
-                "Content_En" : content.Content_En
+                "Content_En" : content.Content_En,
+                "Search_num" : content.Search_num
             }
             record.append(rec)
         rank = {
@@ -38,7 +39,8 @@ def search_titles(request_Paper_ID):
             "Authors"    : content.Authors.split(","),
             "Categories" : content.Categories.split(","),
             "Published"  : content.Published,
-            "Content_En" : content.Content_En
+            "Content_En" : content.Content_En,
+            "Pdf_url"    : content.Pdf_url,
         }
         return record
     else:
@@ -111,7 +113,7 @@ def add_content(paper_data):
 
 # Add keywords
 def add_keywords(keyword_data):
-    k_ds = ','.join(keyword_data["Keywords"])
+    k_ds = keyword_data["Keywords"]
     keywords     = []
     descriptions = []
     for i in k_ds:
@@ -128,9 +130,9 @@ def add_keywords(keyword_data):
 
 
 # add_content + add_keywords    for views.py
-def add_content_keywords(paper_data, keyword_data):
+def add_content_keywords(paper_data):
     add_content(paper_data)
-    add_keywords(keyword_data)
+    add_keywords(paper_data)
 
 
 
