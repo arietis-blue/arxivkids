@@ -53,10 +53,10 @@ def keywords(content,category):
   category_prompt = ",\n".join(category)
   
   prompt = """
-           Task: Please extract five technical term and create a description for that keyword in Japanese. I would like to acquire and explain technical terms so that beginners can understand the following paper. Please add an explanation of the word itself as well as how it is used in the abstract.
+           Task: Please extract five technical terms in Japanese. Then make descriptions for each technical term.
            Limit: Each description must be written in around 200 Japanese characters.
            Format example:
-           [
+           {'list':[
              {
                'Keyword':"keyword_1_name",
                'Description':"keyword_1_description
@@ -73,7 +73,7 @@ def keywords(content,category):
             {
                'Keyword':"keyword_n_name",
                'Description':"keyword_n_description
-             }           ]
+             }           ]}
           Paper abstract:
            """\
           + content
@@ -91,16 +91,18 @@ def keywords(content,category):
     temperature=0.5,
   )
   try:
-    result = json.loads((completion.choices[0].message.function_call.arguments))
+    result_str = (completion.choices[0].message.function_call.arguments)
+    result = json.loads(result_str)
     
     # 悪い例
-    # result =""" {'list':[
+    # result_str =""" {'list':[
     #   {'Keyword': 'keyword_1_name'},
     #   {'Keyword': 'keyword_2_name'},
     #   {'Keyword': 'keyword_3_name'},
     #   # ... 追加の要素
     #   {'Keyword': 'keyword_n_name'}
     # ]}"""
+    # result = json.loads(result_str)
     # print(result['list'])
     if(check_output_type(result['list'])):
       None
@@ -110,17 +112,52 @@ def keywords(content,category):
   except:
     # エラー処理→langchainのParserを用いて出力の型を調整
     # try:
-    print("json correction")
+    print("json correction") 
     result =  {
       'list':[{
             "Keyword": "GPT Error",
             "Description": "GPT Error in Extracting Keyword. Please retry to get keyword."
       }]}
-    
+    # retry_prompt = f"""
+    #         Task: Rewrite the following "Output" to a json list with 'Keyword' and 'Description' as elements, such as "Format example"."\n.
+    #         "Output": \n{result_str}\n
+    #         """
+    # retry_prompt += """
+    #        "Format example":
+    #        [
+    #          {
+    #            'Keyword':"keyword_1_name",
+    #            'Description':"keyword_1_description
+    #          },
+    #         {
+    #            'Keyword':"keyword_2_name",
+    #            'Description':"keyword_2_description
+    #          },
+    #         {
+    #            'Keyword':"keyword_3_name",
+    #            'Description':"keyword_3_description
+    #          }
+    #         ,,,
+    #         {
+    #            'Keyword':"keyword_n_name",
+    #            'Description':"keyword_n_description
+    #          }           ]
+    #        """
+    # completion = openai.ChatCompletion.create(
+    # model="gpt-3.5-turbo-0613",
+    # messages=[
+    #   {"role": "system", "content": "You are an expert in the following academic areas\n" + category_prompt},
+    #   {"role": "user", "content": retry_prompt}
+    # ],
+    # functions=[{"name": "set_keywords_and_desctiption", "parameters": schema}],
+    # function_call={"name": "set_keywords_and_desctiption"},
+    # temperature=0,
+    # )
+    # result_str2 = (completion.choices[0].message.function_call.arguments)
+    # result = json.loads(result_str2)
     # parser =  PydanticOutputParser(pydantic_object=Keywords)
     # new_parser = OutputFixingParser.from_llm(parser=parser, llm=ChatOpenAI())
-    # print(result)
-    # correct_result = (new_parser.parse(result))
+    # correct_result = (new_parser.parse(result_str))
     # print(correct_result)
     # result = json.loads(correct_result)
     # # それでもエラーが起きたらエラーを返す
@@ -130,6 +167,87 @@ def keywords(content,category):
     # #         "Keyword": "GPT Error",
     # #         "Description": "GPT Error in Extracting Keyword. Please retry to get keyword."
     # #     }
+    # result =  {
+    #   'list':[{
+    #         "Keyword": "GPT Error",
+    #         "Description": "GPT Error in Extracting Keyword. Please retry to get keyword."
+    #   }]}
+      
+  time_end = time.time()
+  # 経過時間（秒）
+  tim = time_end- time_sta
+  print(tim)
+  # print(result)
+  return(result)
+
+# キーワードの一覧と説明を段階的に行う
+def keywords_steps(content,category):
+  time_sta = time.time()
+  # gptのfunction機能で指定する返り値の型
+  title_schema = {
+  "type": "object",
+  "properties": {
+       "list": {
+      "type": "array",
+      "description": "Important Japanese keywords and their detailed description.",
+      "items": { 
+            "Keyword":{
+              "type":"string",
+              "description":"keyword name"
+            },
+          }
+    }
+  },
+  "required": ["Keyword"]
+}  
+  category_prompt = ",\n".join(category)
+  
+  prompt = """
+           Task: Please extract five technical terms in Japanese.
+           Format example:
+           {'list':[
+             {
+               'Keyword':"keyword_1_name"
+             },
+            {
+               'Keyword':"keyword_2_name"
+             },
+            {
+               'Keyword':"keyword_3_name"
+             }
+            ,,,
+            {
+               'Keyword':"keyword_n_name"
+             }           ]}
+          Paper abstract:
+           """\
+          + content
+#出力
+           
+  completion = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo-0613",
+    messages=[
+      {"role": "system", "content": "You are an expert in the following academic areas\n" + category_prompt},
+      {"role": "user", "content": prompt}
+    ],
+    functions=[{"name": "set_keywords", "parameters": title_schema}],
+    function_call={"name": "set_keywords"},
+    temperature=0,
+  )
+  try:
+    result_str = (completion.choices[0].message.function_call.arguments)
+    result = json.loads(result_str)
+    print(result['list'])
+    # print(result['list'])
+    if(check_output_type(result['list'])):
+      None
+    else:
+      # jsonの型が正しくない場合はエラーを発生させ、型修正を行う
+      raise Exception
+  except:
+    # エラー処理→langchainのParserを用いて出力の型を調整
+    # try:
+    print("json correction") 
       
   time_end = time.time()
   # 経過時間（秒）
@@ -146,11 +264,10 @@ def check_output_type(json_list):
     return True
 
 # Example Usage
-# Text = '我々は、高レベルのコミュニケーションと低レベルのパスプランニングの両方に、事前に訓練された大規模言語モデル（LLM）の力を活用する、マルチロボット協調のための新しいアプローチを提案する。ロボットは、タスク戦略を議論し、集団的に推論するためにLLMを装備している。LLMはサブタスク計画とタスク空間ウェイポイント経路を生成し、マルチアームモーションプランナーにより軌道計画を加速する。また、衝突チェックのような環境からのフィードバックを提供し、LLMエージェントがコンテキスト内で計画とウェイポイントを改善するように促す。評価のために、我々はRoCoBenchを導入する。RoCoBenchは、エージェントの表現と推論のためのテキストのみのデータセットとともに、幅広いマルチロボット協調シナリオをカバーする6タスクベンチマークである。RoCoBenchの全てのタスクにおいて高い成功率を達成し、タスクセマンティクスの変化にも適応する。我々のダイアログ設定は高い解釈性と柔軟性を提供し、実世界の実験では、RoCoは簡単にヒューマンインザループを組み込むことができ、ユーザはロボットエージェントとコミュニケーションし、協力してタスクを完了することができる。ビデオとコードはプロジェクトのウェブサイトhttps://project-roco.github.io'
+# Text = '自律走行車の知覚・制御システムは、科学的にも産業的にも活発な研究分野である。このような機能を実現するには、適切なアルゴリズムと適切なコンピューティングプラットフォームが必要である。本論文では、MultiTaskV3detection-segmentationネットワークを、単一のアーキテクチャで両方の機能を実行できる知覚システムの基礎として使用した。このネットワークは適切に訓練され、定量化され、AMD Xilinx Kria KV260 Vision AIembeddedプラットフォーム上に実装された。このデバイスを使用することで、計算の並列化と高速化が可能になった。さらに、システム全体の消費電力は、CPUベースの実装に比べて比較的小さく（弱いCPUの最低消費電力55ワットに対し、平均5ワット）、プラットフォームのサイズが小さい（119mm×140mm×36mm）ため、利用可能なスペースが限られている機器でも使用できます。また、物体検出ではmAP（平均平均精度）の97％以上、画像セグメンテーションではmIoU（平均交差和）の90％以上の精度を達成している。本稿では、提案されたソリューションを模擬都市でテストするために使用されたMecanumホイール・ビークルの設計についても詳述する'
 # category = [
-#         "Robotics",
-#         "Artificial Intelligence",
-#         "Machine Learning"
+#         "Computer Vision and Pattern Recognition",
+#         "Image and Video Processing"
 #     ]
 # output = keywords(Text,category)
 # print(output)
