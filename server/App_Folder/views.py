@@ -6,8 +6,9 @@ from rest_framework.response import Response
 
 from .api_call import search_paper, paper_detail
 from .operate_database import search_titles, search_papers, add_title, add_content_keywords, delete
-
+from .recommentation_main import recommendation
 from pdb import set_trace
+
 
 # Arxiv_Searchのgetメソッドを用いたDebug用 
 search = {
@@ -74,6 +75,7 @@ contents =  {
         "Title_Ja": "一般的なパターン・マシンとしての大規模言語モデル"
     }
 
+
 class Paper_detail(APIView):
     def get(self, request):
         return Response("OK", status=status.HTTP_200_OK)
@@ -85,9 +87,9 @@ class Paper_detail(APIView):
         
         # Paper_IDを取得
         paper_id = search_paper_json["Paper_ID"]
+
         # 既に日本語付き論文があればそのまま取得、なければ空のjson(=まだ検索されたことのない論文)を返す。
         paper_plusJa_json = search_papers(paper_id)
-
 
         # 空のjson(=まだ検索されたことのない論文)ならば、DeepLを用いて日本語の概要を追加したjsonを返す。
         if len(paper_plusJa_json)==0:
@@ -97,4 +99,10 @@ class Paper_detail(APIView):
             add_content_keywords(paper_plusJa_json)
         
         return Response(paper_plusJa_json)
-    
+
+
+# 推薦モデルの作成
+class Paper_recommend(APIView):
+    def get(self, request):
+        return Response(recommendation())
+        # return Response(paper_detail.main(contents))
