@@ -314,10 +314,10 @@ def check_output_type(json_list):
     return True
 
 # Example Usage
-Text = '自律走行車の知覚・制御システムは、科学的にも産業的にも活発な研究分野である。このような機能を実現するには、適切なアルゴリズムと適切なコンピューティングプラットフォームが必要である。本論文では、MultiTaskV3detection-segmentationネットワークを、単一のアーキテクチャで両方の機能を実行できる知覚システムの基礎として使用した。このネットワークは適切に訓練され、定量化され、AMD Xilinx Kria KV260 Vision AIembeddedプラットフォーム上に実装された。このデバイスを使用することで、計算の並列化と高速化が可能になった。さらに、システム全体の消費電力は、CPUベースの実装に比べて比較的小さく（弱いCPUの最低消費電力55ワットに対し、平均5ワット）、プラットフォームのサイズが小さい（119mm×140mm×36mm）ため、利用可能なスペースが限られている機器でも使用できます。また、物体検出ではmAP（平均平均精度）の97％以上、画像セグメンテーションではmIoU（平均交差和）の90％以上の精度を達成している。本稿では、提案されたソリューションを模擬都市でテストするために使用されたMecanumホイール・ビークルの設計についても詳述する'
-category = [
-        "Computer Vision and Pattern Recognition",
-        "Image and Video Processing"
-    ]
-output = keywords(Text,category)
-print(output)
+# Text = '自律走行車の知覚・制御システムは、科学的にも産業的にも活発な研究分野である。このような機能を実現するには、適切なアルゴリズムと適切なコンピューティングプラットフォームが必要である。本論文では、MultiTaskV3detection-segmentationネットワークを、単一のアーキテクチャで両方の機能を実行できる知覚システムの基礎として使用した。このネットワークは適切に訓練され、定量化され、AMD Xilinx Kria KV260 Vision AIembeddedプラットフォーム上に実装された。このデバイスを使用することで、計算の並列化と高速化が可能になった。さらに、システム全体の消費電力は、CPUベースの実装に比べて比較的小さく（弱いCPUの最低消費電力55ワットに対し、平均5ワット）、プラットフォームのサイズが小さい（119mm×140mm×36mm）ため、利用可能なスペースが限られている機器でも使用できます。また、物体検出ではmAP（平均平均精度）の97％以上、画像セグメンテーションではmIoU（平均交差和）の90％以上の精度を達成している。本稿では、提案されたソリューションを模擬都市でテストするために使用されたMecanumホイール・ビークルの設計についても詳述する'
+# category = [
+#         "Computer Vision and Pattern Recognition",
+#         "Image and Video Processing"
+#     ]
+# output = keywords(Text,category)
+# print(output)
