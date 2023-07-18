@@ -5,7 +5,7 @@ import json
 # Search_num ranking
 def search_rank():
     if Papers.objects.exists():
-        contents = Papers.objects.order_by("Search_num")[:10]
+        contents = Papers.objects.order_by("-Search_num")[:10]
         record = []
         for content in contents:
             rec = {
