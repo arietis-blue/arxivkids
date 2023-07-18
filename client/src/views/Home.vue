@@ -12,15 +12,24 @@
       <el-main>
         <el-scrollbar height="800px" class="mt-4">
 
+          <div v-if="waitingArxiv">
+            <!-- <el-progress :percentage="100" status="warning" :indeterminate="true" :duration="1" /> -->
+            <el-skeleton :rows="15" animated />
+          </div>
+
           {{ fivePapersStore.fivePapers }}
 
+          <!-- v-for显示10篇论文 -->
           <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
             class="w-1/5 h-[225px]  rounded-xl shadow-2xl  hover:ring-2 ring-gray-500"
-            :style="{ backgroundColor: getRandomLightColor() }"
+            
           >
-          <a :href="paper.Pdf_url">pdf</a>
+          <PaperRow />
           </div>
           
+
+
+
           <div class="flex">
             <PaperRow />
             <router-link to="login" class="w-full">
@@ -53,6 +62,10 @@ const { isLoginOpen } = storeToRefs(isLoginOpenStore)
 
 import { useFivePapersStore } from '../stores/fivePapers'
 const fivePapersStore = useFivePapersStore()
+
+import { useWaitingStore } from '../stores/waiting'
+const waitingStore = useWaitingStore()
+const { waitingArxiv } = storeToRefs(waitingStore)
 
 import PaperRow from "../components/PaperRow.vue";
 import { Star } from "@element-plus/icons-vue"

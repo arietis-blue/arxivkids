@@ -71,6 +71,7 @@ import axios from 'axios'
 // import '../mock/arxiv'
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { storeToRefs } from 'pinia'
 import { Search } from "@element-plus/icons-vue"
 // npm i vue-material-design-icons后直接import
 // 各种图标参见material https://pictogrammers.com/library/mdi/
@@ -89,6 +90,11 @@ const isLoginOpenStore = useIsLoginOpenStore()
 import { useFivePapersStore } from '../stores/fivePapers'
 const fivePapersStore = useFivePapersStore()
 
+import { useWaitingStore } from '../stores/waiting'
+const waitingStore = useWaitingStore()
+const { waitingArxiv } = storeToRefs(waitingStore)
+//pinia的东西要是storeToRefs变成响应式的了，使用就要.value
+
 const route = useRoute()
 const router = useRouter()
 
@@ -99,30 +105,23 @@ const searchContent = ref("")
 // const fivePapers = ref([])
 // const fivePapers = ref()
 
+//输出1,3,2 post前的命令执行完，不会等post，直接去执行post后面的
 const getFivePapers = () => {
+  waitingArxiv.value = true //pinia的东西要是storeToRefs变成响应式的了，使用就要.value
+  // console.log(1)
   console.log(searchContent)
   //别忘了script要value，之前"Search": searchContent就错了  有问题console.log()检查
-  // axios.post('http://127.0.0.1:8000/api/arxiv/', { "Search": searchContent.value })
-  //   .then(res => {
-  //     console.log(res.data)
-  //     fivePapersStore.fivePapers = res.data //pinia的东西不用.value
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //   })
-  axios.get('http://localhost:3000/arxiv', {
-  // 请求体数据（可选）
-  "Search": searchContent.value
-})
-  .then(response => {
-    // 处理成功响应
-    console.log(response.data);
-    fivePapersStore.fivePapers = response.data
-  })
-  .catch(error => {
-    // 处理请求错误
-    console.error(error);
-  })
+  axios.post('http://127.0.0.1:8000/api/arxiv/', { "Search": searchContent.value })
+    .then(res => {
+      // console.log(2)
+      waitingArxiv.value = false
+      console.log(res.data)
+      fivePapersStore.fivePapers = res.data //pinia的东西不用.value
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    // console.log(3)
 }
 
 const goLogin = () => {

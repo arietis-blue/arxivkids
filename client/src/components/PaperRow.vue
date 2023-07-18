@@ -1,6 +1,6 @@
 <template>
     <div >
-
+        <a :href="paper.Pdf_url">pdf</a>
     </div>
 </template>
 
