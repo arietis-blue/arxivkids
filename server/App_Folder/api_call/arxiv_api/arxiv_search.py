@@ -10,7 +10,7 @@ with open(parent.joinpath("cat_dic.json")) as f:
 
 # 検索文を受け取りjsonのリストを返す
 def get_arxiv_data(query):
-    max_results = 5
+    max_results = 10
     search = arxiv.Search(
         query=query,
         max_results=max_results,
