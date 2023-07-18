@@ -16,26 +16,28 @@
             <!-- <el-progress :percentage="100" status="warning" :indeterminate="true" :duration="1" /> -->
             <el-skeleton :rows="15" animated />
           </div>
-
-          {{ fivePapersStore.fivePapers }}
+          
+          <div>{{ fivePapersStore.fivePapers[0] }}</div>
+          <div>{{ fivePapersStore.fivePapers[1] }}</div>
+          <div>{{ fivePapersStore.fivePapers[2] }}</div>
 
           <!-- v-for显示10篇论文 -->
-          <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
+          <!-- <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
             class="w-1/5 h-[225px]  rounded-xl shadow-2xl  hover:ring-2 ring-gray-500"
-            
+            justify-between rounded-xl shadow-2xl  hover:ring-2 ring-gray-500
           >
           <PaperRow />
-          </div>
+          </div> -->
           
 
 
 
-          <div class="flex">
+          <!-- <div class="flex">
             <PaperRow />
             <router-link to="login" class="w-full">
               <el-button type="warning" :icon="Star" circle />
             </router-link>
-          </div>
+          </div> -->
 
 
         </el-scrollbar>

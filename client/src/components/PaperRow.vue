@@ -5,5 +5,14 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs, ref } from "vue";
+import { defineProps, toRefs, ref } from "vue"
+// import { useFivePapersStore } from '../stores/fivePapers'
+// const fivePapersStore = useFivePapersStore()
+const props = defineProps({
+    Title_En: String,
+    Title_Ja: String,
+
+})
+
+
 </script>
