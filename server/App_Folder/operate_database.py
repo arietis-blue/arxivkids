@@ -5,7 +5,7 @@ import json
 # Search_num ranking
 def search_rank():
     if Papers.objects.exists():
-        contents = Papers.objects.order_by("Search_num")[:10]
+        contents = Papers.objects.order_by("-Search_num")[:10]
         record = []
         for content in contents:
             rec = {
@@ -20,9 +20,10 @@ def search_rank():
             }
             record.append(rec)
         rank = {
-            rank : rec
+            "rank" : record
         }
         return rank
+    
     else:
         return{}
 
@@ -149,12 +150,12 @@ def add_user(user_data):
 
 
 # Search User's history
-def get_histry(request_User_ID):
+def get_history(request_User_ID):
     if Reads.objects.get(Reader_ID = request_User_ID).exists():
         contents = Reads.objects.filter(Reader_ID = request_User_ID)
         recs = []
-        for i in contents:
-            p_id = contents.Paper_ID
+        for content in contents:
+            p_id = content.Paper_ID
             paper_detail = Papers.objects.get(Paper_ID = p_id)
             record = {
                 "Paper_ID" : p_id,
@@ -163,7 +164,7 @@ def get_histry(request_User_ID):
             }
             recs.append(record)
         records = {
-            "Histries" : recs
+            "Histories" : recs
         }
         return records
     else:
