@@ -14,20 +14,29 @@
 
           <div v-if="waitingArxiv">
             <!-- <el-progress :percentage="100" status="warning" :indeterminate="true" :duration="1" /> -->
-            <el-skeleton :rows="15" animated />
+            <el-skeleton :rows="30" animated />
           </div>
           
-          <div>{{ fivePapersStore.fivePapers[0] }}</div>
-          <div>{{ fivePapersStore.fivePapers[1] }}</div>
-          <div>{{ fivePapersStore.fivePapers[2] }}</div>
+          <!-- {{ fivePapersStore.fivePapers}} -->
 
-          <!-- v-for显示10篇论文 -->
-          <!-- <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
-            class="w-1/5 h-[225px]  rounded-xl shadow-2xl  hover:ring-2 ring-gray-500"
-            justify-between rounded-xl shadow-2xl  hover:ring-2 ring-gray-500
-          >
-          <PaperRow />
-          </div> -->
+          <!-- <div class="flex justify-center"> 上下两个的区别好好体会，怎么居中，居中的是什么 -->
+          <div class="grid justify-items-center space-y-6">
+            <!-- v-for显示10篇论文 -->
+            <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
+              class="w-2/3 my-2"
+            >
+              <PaperRow
+                :Paper_ID="paper.Paper_ID"
+                :Title_En="paper.Title_En"
+                :Title_Ja="paper.Title_Ja"
+                :Content_En="paper.Content_En"
+                :Pdf_url="paper.Pdf_url"
+                :Published="paper.Published"
+                :Authors="paper.Authors"
+              />
+            </div>
+          </div>
+          
           
 
 
@@ -72,9 +81,7 @@ const { waitingArxiv } = storeToRefs(waitingStore)
 import PaperRow from "../components/PaperRow.vue";
 import { Star } from "@element-plus/icons-vue"
 
-function getRandomLightColor() {
-  return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
-}
+
 
 const goDetailPaper = () => {
   router.push('/detailpaper')

@@ -124,18 +124,18 @@ const getFivePapers = () => {
     // console.log(3)
 }
 
-const goLogin = () => {
-  router.push('/login')
-}
+// const goLogin = () => {
+//   router.push('/login')
+// }
 
-const logout = () => {
-  isLogined.value = false
-  router.push('/')
-  try {
-    $userStore.logout()
-  } catch (error) {
-    console.log(error)
-  }
-}
+// const logout = () => {
+//   isLogined.value = false
+//   router.push('/')
+//   try {
+//     $userStore.logout()
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
 </script>
