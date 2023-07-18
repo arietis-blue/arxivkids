@@ -35,17 +35,23 @@
         <div class="w-full flex items-center pt-4 border-b">
             <!-- 居中有问题啊 -->
             <div class="w-60 flex items-center text-center py-2 text-[17px] font-semibold border-b-2 border-b-black">
-                <div><el-icon class="pt-3 mr-2 "><View /></el-icon></div>
-                History
+                <div><el-icon class="pt-3 mr-2 ">
+                        <View />
+                    </el-icon></div>
+                    <el-badge :value="12" class="item">History</el-badge>
             </div>
             <div class="w-60 text-gray-500 text-center py-2 text-[17px] font-semibold">
-                <el-icon><Star /></el-icon> Liked
+                <el-icon>
+                    <Star />
+                </el-icon>
+                <!-- Liked -->
+                <el-badge :value="12" class="item">
+                    <el-button>Liked</el-button>
+                </el-badge>
             </div>
         </div>
 
-        <PaperRow
-            author="ABCDEF"
-        />
+        <PaperRow author="ABCDEF" />
 
     </div>
 </template>
