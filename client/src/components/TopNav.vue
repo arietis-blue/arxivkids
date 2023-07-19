@@ -1,5 +1,5 @@
 <template>
-  <div id="TopNav" class="fixed bg-neutral-700 mt-3 z-30 flex items-center w-full border-b h-[70px]">
+  <div id="TopNav" class="fixed bg-neutral-700 mt-0.5 z-30 flex items-center w-full border-b h-[70px]">
     <div class="flex items-center justify-between w-full px-6 mx-auto">
 
       <img src="../assets/arxiv-logo-1-300x135.png" style="transform: scale(0.6);">
@@ -95,6 +95,9 @@ const waitingStore = useWaitingStore()
 const { waitingArxiv } = storeToRefs(waitingStore)
 //pinia的东西要是storeToRefs变成响应式的了，使用就要.value
 
+import { useHasSearchedStore } from '../stores/hasSearched'
+const { hasSearched } = storeToRefs(useHasSearchedStore())
+
 const route = useRoute()
 const router = useRouter()
 
@@ -107,35 +110,51 @@ const searchContent = ref("")
 
 //输出1,3,2 post前的命令执行完，不会等post，直接去执行post后面的
 const getFivePapers = () => {
+  router.push('/')
   waitingArxiv.value = true //pinia的东西要是storeToRefs变成响应式的了，使用就要.value
   // console.log(1)
   console.log(searchContent)
   //别忘了script要value，之前"Search": searchContent就错了  有问题console.log()检查
-  axios.post('http://127.0.0.1:8000/api/arxiv/', { "Search": searchContent.value })
+  if(searchContent.value.trim() === ""){
+    axios.get('http://127.0.0.1:8000/api/recommend/')
+    .then(res => {
+      waitingArxiv.value = false
+      hasSearched.value = false
+      console.log(res.data)
+      fivePapersStore.fivePapers = res.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+  else{
+    axios.post('http://127.0.0.1:8000/api/arxiv/', { "Search": searchContent.value })
     .then(res => {
       // console.log(2)
       waitingArxiv.value = false
+      hasSearched.value = true
       console.log(res.data)
       fivePapersStore.fivePapers = res.data //pinia的东西不用.value
     })
     .catch((err) => {
       console.log(err)
     })
-    // console.log(3)
+  }
+  // console.log(3)
 }
 
 // const goLogin = () => {
 //   router.push('/login')
 // }
 
-// const logout = () => {
-//   isLogined.value = false
-//   router.push('/')
-//   try {
-//     $userStore.logout()
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
+const logout = () => {
+  isLogined.value = false
+  router.push('/')
+  try {
+    $userStore.logout()
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 </script>
