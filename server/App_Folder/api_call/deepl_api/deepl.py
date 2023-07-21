@@ -20,7 +20,7 @@ def translate_ja_list(content_list):
                 "target_lang": target_lang  # 翻訳後の言語
             }
     # リクエストを投げる
-    request = requests.post("https://api-free.deepl.com/v2/translate", data=params) # URIは有償版, 無償版で異なるため要注意
+    request = requests.post("https://api.deepl.com/v2/translate", data=params) # URIは有償版, 無償版で異なるため要注意
     result = request.json()
     result_list = [item['text'] for item in result["translations"]]
     return result_list
@@ -35,7 +35,7 @@ def translate_ja(text):
                 "target_lang": target_lang  # 翻訳後の言語
             }
     # リクエストを投げる
-    request = requests.post("https://api-free.deepl.com/v2/translate", data=params) # URIは有償版, 無償版で異なるため要注意
+    request = requests.post("https://api.deepl.com/v2/translate", data=params) # URIは有償版, 無償版で異なるため要注意
     result = request.json()
     result = result["translations"][0]["text"]
     return result
