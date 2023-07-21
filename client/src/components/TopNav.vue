@@ -2,8 +2,9 @@
   <div id="TopNav" class="fixed bg-neutral-700 mt-0.5 z-30 flex items-center w-full border-b h-[70px]">
     <div class="flex items-center justify-between w-full px-6 mx-auto">
 
-      <img src="../assets/arxiv-logo-1-300x135.png" style="transform: scale(0.6);">
-
+      <router-link :to="{name: 'Home'}">
+        <img src="../assets/arxiv-logo-1-300x135.png" style="transform: scale(0.6);">
+      </router-link>
 
       <div class="hidden md:flex items-center bg-[#F1F1F2] p-1 rounded-full max-w-[580px] w-full ">
         <input type="text" class="w-full pl-3 my-2 bg-transparent placeholder-[#838383] text-[15px] focus:outline-none text-black"
@@ -83,7 +84,7 @@ import { useDark, useToggle } from '@vueuse/core'
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 import { Sunny, Moon } from '@element-plus/icons-vue'
-
+  
 import { useIsLoginOpenStore } from '../stores/isLoginOpen'
 const isLoginOpenStore = useIsLoginOpenStore()
 
@@ -110,7 +111,7 @@ const searchContent = ref("")
 
 //输出1,3,2 post前的命令执行完，不会等post，直接去执行post后面的
 const getFivePapers = () => {
-  router.push('/')
+  router.push({name: 'Home'})
   waitingArxiv.value = true //pinia的东西要是storeToRefs变成响应式的了，使用就要.value
   // console.log(1)
   console.log(searchContent)
@@ -149,12 +150,13 @@ const getFivePapers = () => {
 
 const logout = () => {
   isLogined.value = false
-  router.push('/')
+  router.push({name: 'Home'})
   try {
-    $userStore.logout()
+    // $userStore.logout()
   } catch (error) {
     console.log(error)
   }
 }
+
 
 </script>

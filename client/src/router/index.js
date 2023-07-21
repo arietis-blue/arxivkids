@@ -8,17 +8,17 @@ import Profile from '../views/Profile.vue'
 const routes = [
   {
     path: '/',
-    name: Home,
+    name: 'Home',
     component: Home
   },
   {
     path: '/detailpaper',
-    name: DetailPaper,
+    name: 'DetailPaper',
     component: DetailPaper
   },
   {
     path: '/profile',
-    name: Profile,
+    name: 'Profile',
     component: Profile
   },
   // {
