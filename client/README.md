@@ -5,3 +5,15 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+---
+
+
+
+
+
+## client側の立ち上げる方法
+
+まず`nodejs`をインストールして
+
+./clientというフォルダーの中に`npm install`してから`npm run dev`実行したら、`http://127.0.0.1:5173/`で画面が見られるはずだ

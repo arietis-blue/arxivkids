@@ -133,7 +133,7 @@ const choosedPaperInfoStore = useChoosedPaperInfoStore()
 
 const showJP = ref(true)
 const showEN = ref(false)
-const showCN = ref(false)
+// const showCN = ref(false)
 
 const chooseJP = () => {
   showJP.value = true
@@ -176,6 +176,8 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toISOString().slice(0, 10);
 }
+
+// setTimeout(_ => {alert(1)}, 1000)
 
 </script>
 

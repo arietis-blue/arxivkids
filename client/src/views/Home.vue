@@ -61,14 +61,6 @@
             </div>
           </div>
 
-           
-          
-          
-
-
-
-       
-
 
         </el-scrollbar>
       </el-main>
@@ -137,6 +129,8 @@ const getRecommendedPapers = () => {
 
 getRecommendedPapers()
 
+
+// alert('wtf')
 
 </script>
 
