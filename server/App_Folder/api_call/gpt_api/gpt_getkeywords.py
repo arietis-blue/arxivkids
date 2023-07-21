@@ -68,7 +68,7 @@ def keywords(content,category):
             {
                'Keyword':"keyword_3_name",
                'Description':"keyword_3_description
-             }
+             },
             ,,,
             {
                'Keyword':"keyword_n_name",
@@ -176,15 +176,17 @@ def keywords(content,category):
   time_end = time.time()
   # 経過時間（秒）
   tim = time_end- time_sta
-  print(tim)
+  print(f"keywords_time:{tim}")
   # print(result)
-  return(result)
+  return(result['list'])
 
 # キーワードの一覧と説明を段階的に行う
 def keywords_steps(content,category):
   time_sta = time.time()
+  
+  # キーワード取得
   # gptのfunction機能で指定する返り値の型
-  title_schema = {
+  name_schema = {
   "type": "object",
   "properties": {
        "list": {
@@ -214,7 +216,7 @@ def keywords_steps(content,category):
              },
             {
                'Keyword':"keyword_3_name"
-             }
+             },
             ,,,
             {
                'Keyword':"keyword_n_name"
@@ -222,20 +224,20 @@ def keywords_steps(content,category):
           Paper abstract:
            """\
           + content
-  completion_title = openai.ChatCompletion.create(
+  completion_name = openai.ChatCompletion.create(
     model="gpt-3.5-turbo-0613",
     messages=[
       {"role": "system", "content": "You are an expert in the following academic areas\n" + category_prompt},
       {"role": "user", "content": prompt}
     ],
-    functions=[{"name": "set_keywords", "parameters": title_schema}],
+    functions=[{"name": "set_keywords", "parameters": name_schema}],
     function_call={"name": "set_keywords"},
     temperature=0,
   )
-  result_str_title = (completion_title.choices[0].message.function_call.arguments)
-  result_title = json.loads(result_str_title)
-  print(result_title['list'])
-#出力
+  result_str_name = (completion_name.choices[0].message.function_call.arguments)
+
+  
+#説明文の作成
   description_schema = {
   "type": "object",
   "properties": {
@@ -253,7 +255,8 @@ def keywords_steps(content,category):
   "required": ["Description"]
   }       
   prompt = """
-           Task: Please make descriptions for each five technical terms in Japanese.
+           Task: Please make descriptions for each five keywords in Japanese .
+           Limit: Each description must be written in around 100 Japanese characters.
            Format example:
            {'list':[
              {
@@ -264,14 +267,14 @@ def keywords_steps(content,category):
              },
             {
                'Description':"keyword_3_description"
-             }
+             },
             ,,,
             {
                'Description':"keyword_n_description"
              }           ]}
           Keywords_list:
            """\
-          + result_str_title
+          + result_str_name
   completion_description = openai.ChatCompletion.create(
     model="gpt-3.5-turbo-0613",
     messages=[
@@ -282,14 +285,22 @@ def keywords_steps(content,category):
     function_call={"name": "set_keywords_description"},
     temperature=0,
   )
-  
+  result_str_description = (completion_description.choices[0].message.function_call.arguments)
+
   try:
-    result_str_description = (completion_description.choices[0].message.function_call.arguments)
+    result_name = json.loads(result_str_name)
     result_description = json.loads(result_str_description)
-    print(result_description['list'])
-    # print(result['list'])
-    return 
-    if(check_output_type(result['list'])):
+        
+    keyword_list = []
+    
+    for name, description in zip(result_name['list'],result_description['list']):
+      keyword =  {
+              "Keyword": name['Keyword'],
+              "Description": description['Description']
+              }
+      keyword_list.append(keyword)
+    # print(keyword_list)
+    if(check_output_type(keyword_list)):
       None
     else:
       # jsonの型が正しくない場合はエラーを発生させ、型修正を行う
@@ -298,13 +309,16 @@ def keywords_steps(content,category):
     # エラー処理→langchainのParserを用いて出力の型を調整
     # try:
     print("json correction") 
-      
+    keyword_list = [{
+            "Keyword": "GPT Error",
+            "Description": "GPT Error in Extracting Keyword. Please retry to get keyword."
+      }]
   time_end = time.time()
   # 経過時間（秒）
   tim = time_end- time_sta
-  print(tim)
+  print(f"time to get keywords: {tim}")
   # print(result)
-  return(result_description)
+  return(keyword_list)
 
 # 出力の型が正しいかチェックする
 def check_output_type(json_list):
