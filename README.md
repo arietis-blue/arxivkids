@@ -33,9 +33,14 @@ http://localhost:8000
 ### Step.2 Client　
 Node.jsをDownload(https://nodejs.org/ja/download)
 
-次に./clientというフォルダーの中で
+次に`./client`というフォルダーに移動する。
+
+まず、1回目のみ以下を実行する。
 ````
 npm install
+````
+次に以下を実行する。
+````
 npm run dev
 ````
 
