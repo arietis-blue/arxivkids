@@ -1,4 +1,4 @@
-from .gpt_api.gpt_getkeywords import keywords
+from .gpt_api.gpt_getkeywords import keywords,keywords_steps
 from .gpt_api.gpt_paraphrase import paraphrase
 from .deepl_api.deepl import translate_ja_list
 from .deepl_api.deepl import translate_ja
@@ -30,7 +30,7 @@ def main(paper_json):
             # `paraphrase`関数を並列化して実行
             plain_content_future = executor.submit(paraphrase, content_ja)
             # `keywords`関数を並列化して実行
-            keywords_future = executor.submit(keywords, content_ja, paper_json["Categories"])
+            keywords_future = executor.submit(keywords_steps, content_ja, paper_json["Categories"])
 
             # `paraphrase`関数の実行結果を取得
             plain_content = plain_content_future.result()
@@ -41,7 +41,7 @@ def main(paper_json):
             keyword_list = keywords_json["list"]
             paper_json["Keywords"] = keyword_list
         return paper_json
-
+    
 # Test Usage
 # import search_paper
 # import time
