@@ -12,21 +12,62 @@
       <el-main>
         <el-scrollbar height="800px" class="mt-4">
 
-          {{ fivePapersStore.fivePapers }}
+          <div v-if="waitingArxiv">
+            <!-- <el-progress :percentage="100" status="warning" :indeterminate="true" :duration="1" /> -->
+            <el-skeleton :rows="30" animated />
+          </div>
 
-          <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
-            class="w-1/5 h-[225px]  rounded-xl shadow-2xl  hover:ring-2 ring-gray-500"
-            :style="{ backgroundColor: getRandomLightColor() }"
-          >
-          <a :href="paper.Pdf_url">pdf</a>
+          <!-- fixed固定住，不会随着scrollなくなる -->
+          <div class="fixed flex flex-col justify-start mx-2 space-y-6">
+            <div class="rounded bg-gradient-to-r from-gray-100 to-gray-200 w-[160px] h-[40px] flex items-center justify-center">
+              <span v-show="!hasSearched" class="text-[15px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-600">Recommend for you</span>
+              <span v-show="hasSearched" class="text-[15px] font-bold text-gray-600">Search result</span>
+            </div>
+
+            <el-switch
+              v-model="omitAbstract"
+              class="mb-2"
+              style="--el-switch-on-color: #b91026; --el-switch-off-color: #c99898"
+              active-text="Show abstracts"
+              inactive-text="Hide abstracts"
+            />
           </div>
           
-          <div class="flex">
-            <PaperRow />
-            <router-link to="login" class="w-full">
-              <el-button type="warning" :icon="Star" circle />
-            </router-link>
+          <!-- {{ fivePapersStore.fivePapers}} -->
+
+          <!-- <div class="flex justify-center"> 上下两个的区别好好体会，怎么居中，居中的是什么 -->
+          <div class="grid justify-items-center space-y-6">
+            <!-- v-for显示10篇论文 -->
+            <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
+              class="flex items-center space-x-3"
+            >
+              <PaperRow
+                :Paper_ID="paper.Paper_ID"
+                :Title_En="paper.Title_En"
+                :Title_Ja="paper.Title_Ja"
+                :Content_En="paper.Content_En"
+                :Pdf_url="paper.Pdf_url"
+                :Published="paper.Published"
+                :Authors="paper.Authors"
+                :Categories="paper.Categories"
+              />
+
+              <button class="p-2 rounded-full bg-gray-300 hover:p-2.5"
+                @click="like"
+              >
+                <HeartIcon :size="25" :fillColor=iconColor />
+              </button>
+
+            </div>
           </div>
+
+           
+          
+          
+
+
+
+       
 
 
         </el-scrollbar>
@@ -38,7 +79,7 @@
 
 <script setup>
 import axios from 'axios'
-// import { ref } from "vue";
+import { ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 const route = useRoute()
 const router = useRouter()
@@ -54,18 +95,49 @@ const { isLoginOpen } = storeToRefs(isLoginOpenStore)
 import { useFivePapersStore } from '../stores/fivePapers'
 const fivePapersStore = useFivePapersStore()
 
+import { useWaitingStore } from '../stores/waiting'
+const waitingStore = useWaitingStore()
+const { waitingArxiv } = storeToRefs(waitingStore)
+
+import { useOmitAbstractStore } from '../stores/omitAbstract'
+const omitAbstractStore = useOmitAbstractStore()
+const { omitAbstract } = storeToRefs(omitAbstractStore)
+
+import { useHasSearchedStore } from '../stores/hasSearched'
+const { hasSearched } = storeToRefs(useHasSearchedStore())
+
 import PaperRow from "../components/PaperRow.vue";
 import { Star } from "@element-plus/icons-vue"
+// npm i vue-material-design-icons后直接import
+// 各种图标参见material https://pictogrammers.com/library/mdi/
+import HeartIcon from "vue-material-design-icons/Heart.vue";
 
-function getRandomLightColor() {
-  return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
+let iconColor = ref("#636363")
+
+const like = () => {
+  if(iconColor.value === "#636363"){
+    iconColor.value = "#ff1493"
+  }
+  else{
+    iconColor.value = "#636363"
+  }
+  isLoginOpen.value = true
 }
 
-const goDetailPaper = () => {
-  router.push('/detailpaper')
-  // axios获取detailpaper的数据 访问后端api/paper
-  // 加入historyList
+const getRecommendedPapers = () => {
+  axios.get('http://127.0.0.1:8000/api/recommend/')
+    .then(res => {
+      console.log(res.data)
+      fivePapersStore.fivePapers = res.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
+
+getRecommendedPapers()
+
+
 </script>
 
 <style scoped></style>

@@ -2,89 +2,110 @@
   <TopNav />
 
   <div class="common-layout pt-12">
-    <el-container class="layout-container pt-12">
-      <el-header class="layout-header">Title</el-header>
+    <el-container class="layout-container pt-10">
+      <el-header class="layout-header">
+        <!-- Title -->
+        <div class="font-bold text-2xl">{{ choosedPaperInfoStore.Title_En }}</div>
+        <div class="font-semibold text-xl">{{ choosedPaperInfoStore.Title_Ja }}</div>
+      </el-header>
       <el-container class="inner-container">
         <el-aside class="aside-container" width="70%">
-          <el-scrollbar height="100%">
-            <!-- <div v-if="isWaiting">
-              <el-progress :percentage="100" status="warning" :indeterminate="true" :duration="2" />
-              <el-skeleton :rows="15" animated />
-            </div> -->
 
-            <div>
-              {{ paperBody }}
-              <!-- {{ allData }} -->
+          <!-- <el-scrollbar height="100%"> -->
+          <div v-if="waitingPaper">
+            <el-progress :percentage="100" status="warning" :indeterminate="true" :duration="2" />
+            <el-skeleton :rows="30" animated />
+          </div>
+
+          <div class="mx-4 my-4">
+
+            <div class="flex justify-end mb-2 ">
+              <button class="rounded-l-full bg-red-500 text-black w-[80px] h-8 hover:bg-red-300"
+                @click="chooseEN"
+              >
+                English
+              </button>
+              <div class="h-8 w-0.5 bg-gray-300"></div>
+              <button class="rounded-r-full bg-green-500 text-black w-[80px] h-8 hover:bg-green-300"
+                @click="chooseJP"
+              >
+                日本語
+              </button>
             </div>
 
-          </el-scrollbar>
+            <div class="mt-3 text-lg mx-6">
+              <div v-if="showJP">
+                {{ currentDetailPaper.Content_Ja }}
+              </div>
+              <div v-if="showEN">
+                {{ currentDetailPaper.Content_En }}
+              </div>
+            </div>
+
+            <!-- <div>{{ currentDetailPaper }}</div> -->
+
+          </div>
+
+          <!-- </el-scrollbar> -->
         </el-aside>
 
         <el-container class="main-footer-container">
           <el-main class="main-container">
-            author date
+            <div>
+              <span class="mr-4">Authors:</span>
+              <!-- {{ choosedPaperInfoStore.Authors }} -->
+              <!-- bug:最后一个item会显示, -->
+              <span v-for="name in choosedPaperInfoStore.Authors" :key="name" class="mr-2 text-blue-600">
+                {{ name }},
+              </span>
+            </div>
+
+            <div>
+              <span class="mr-4">Published:</span>
+              <!-- {{ choosedPaperInfoStore.Published }} -->
+              <span class="date">{{ formatDate(choosedPaperInfoStore.Published) }}</span>
+            </div>
+
+            <div>
+              <span class="mr-4">Categories:</span>
+              <!-- {{ choosedPaperInfoStore.Categories }} -->
+              <!-- bug:最后一个item会显示, -->
+              <span v-for="Category in choosedPaperInfoStore.Categories" :key="Category" class="mr-2 ">
+                {{ Category }},
+              </span>
+            </div>
+
+            <div>
+              <span class="mr-4">Download:</span>
+              <a :href="choosedPaperInfoStore.Pdf_url" class="underline decoration-dashed decoration-pink-600">[pdf]</a>
+            </div>
+
+
           </el-main>
+
           <el-footer class="footer-container">
-            {{ keyWords }}
+            <div v-if="waitingPaper">
+              <el-skeleton :rows="30" animated />
+            </div>
+            <!-- {{ currentDetailPaper.Keywords }} -->
             <el-scrollbar height="100%">
-              <div class="demo-collapse">
-                <el-collapse v-model="activeNames" @change="handleChange">
-                  <el-collapse-item title="Consistency" name="1">
-                    <div>
-                      Consistent with real life: in line with the process and logic of real
-                      life, and comply with languages and habits that the users are used to;
-                    </div>
-                    <div>
-                      Consistent within interface: all elements should be consistent, such
-                      as: design style, icons and texts, position of elements, etc.
-                    </div>
-                  </el-collapse-item>
-                  <el-collapse-item title="Feedback" name="2">
-                    <div>
-                      Operation feedback: enable the users to clearly perceive their
-                      operations by style updates and interactive effects;
-                    </div>
-                    <div>
-                      Visual feedback: reflect current state by updating or rearranging
-                      elements of the page.
+              <!-- Keywords展示 -->
+              <div class="demo-collapse mt-2">
+                <el-collapse v-for="k_d in currentDetailPaper.Keywords" :key="k_d.Keyword">
+
+                  <el-collapse-item>
+                    <template #title>
+                      <span class="text-lg">{{ k_d.Keyword }}</span>
+                    </template>
+                    <div class="text-base">
+                      {{ k_d.Description }}
                     </div>
                   </el-collapse-item>
-                  <el-collapse-item title="Efficiency" name="3">
-                    <div>
-                      Simplify the process: keep operating process simple and intuitive;
-                    </div>
-                    <div>
-                      Definite and clear: enunciate your intentions clearly so that the
-                      users can quickly understand and make decisions;
-                    </div>
-                    <div>
-                      Easy to identify: the interface should be straightforward, which helps
-                      the users to identify and frees them from memorizing and recalling.
-                    </div>
-                  </el-collapse-item>
-                  <el-collapse-item title="Controllability" name="4">
-                    <div>
-                      Decision making: giving advices about operations is acceptable, but do
-                      not make decisions for the users;
-                    </div>
-                    <div>
-                      Controlled consequences: users should be granted the freedom to
-                      operate, including canceling, aborting or terminating current
-                      operation.
-                    </div>
-                  </el-collapse-item>
+
                 </el-collapse>
               </div>
 
-              <div class="mb-4">
-                <KeywordRow />
-              </div>
-              <div class="mb-4">
-                <KeywordRow />
-              </div>
-              <div class="mb-4">
-                <KeywordRow />
-              </div>
+
             </el-scrollbar>
           </el-footer>
         </el-container>
@@ -97,77 +118,72 @@
 <script setup>
 import { ref } from "vue"
 import axios from 'axios'
-import '../mock/paper'
+// import '../mock/paper'
+import { storeToRefs } from 'pinia'
+import { useCurrentDetailPaperStore } from '../stores/currentDetailPaper'
+const { currentDetailPaper } = storeToRefs(useCurrentDetailPaperStore())
 
-const allData = ref()
-const paperBody = ref("sdfdsfdf")
-const keyWords = ref([])
+import { useWaitingStore } from '../stores/waiting'
+const waitingStore = useWaitingStore()
+const { waitingPaper } = storeToRefs(waitingStore)
+//pinia的东西要是storeToRefs变成响应式的了，使用就要.value
 
-let isWaiting = ref(false)
+import { useChoosedPaperInfoStore } from '../stores/choosedPaperInfo'
+const choosedPaperInfoStore = useChoosedPaperInfoStore()
 
-//输出1,3,2 post前的命令执行完，不会等post，直接去执行post后面的
-const getAll = () => {
-  isWaiting.value = true
-  // console.log(1)
-  // axios.get('http://127.0.0.1:8000/api/arxiv/')
-  axios.post('http://127.0.0.1:8000/api/paper/', {
+const showJP = ref(true)
+const showEN = ref(false)
+const showCN = ref(false)
 
-    "Paper_ID": "http://arxiv.org/abs/2307.04744v1",
-    "Title_En": "Behavioral Analysis of Pathological Speaker Embeddings of Patients During Oncological Treatment of Oral Cancer",
-    "Content_En": "In this paper, we analyze the behavior of speaker embeddings of patientsduring oral cancer treatment. First, we found that pre- and post-treatmentspeaker embeddings differ significantly, notifying a substantial change invoice characteristics. However, a partial recovery to pre-operative voicetraits is observed after 12 months post-operation. Secondly, the same-speakersimilarity at distinct treatment stages is similar to healthy speakers,indicating that the embeddings can capture characterizing features of evenseverely impaired speech. Finally, a speaker verification analysis signifies astable false positive rate and variable false negative rate when combiningspeech samples of different treatment stages. This indicates robustness of theembeddings towards other speakers, while still capturing the changing voicecharacteristics during treatment. To the best of our knowledge, this is thefirst analysis of speaker embeddings during oral cancer treatment of patients.",
-    "Categories": [
-      "Audio and Speech Processing"
-    ],
-    "Authors": [
-      "Jenthe Thienpondt",
-      "Kris Demuynck"
-    ],
-    "Pdf_url": "http://arxiv.org/pdf/2307.04744v1",
-    "Published": "2023-07-10T17:53:21Z",
-    "Title_Ja": "口腔癌の腫瘍学的治療における患者の病理学的話者の埋め込みに関する行動分析"
-
-  })
-    .then(res => {
-      // console.log(2)
-      isWaiting.value = false
-      console.log(res.data)
-      allData.value = res.data
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  // console.log(3)
+const chooseJP = () => {
+  showJP.value = true
+  showEN.value = false
 }
-getAll()
 
-const getPaperBody = () => {
-  axios.post('api/papers/getBody')
-    .then(res => {
-      console.log(res.data)
-      paperBody.value = res.data
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+const chooseEN = () => {
+  showJP.value = false
+  showEN.value = true
 }
-getPaperBody()
+
+// const paperBody = ref("sdfdsfdf")
+// const keyWords = ref([])
+
+// const getPaperBody = () => {
+//   axios.post('api/papers/getBody')
+//     .then(res => {
+//       console.log(res.data)
+//       paperBody.value = res.data
+//     })
+//     .catch((err) => {
+//       console.log(err)
+//     })
+// }
+// getPaperBody()
 
 
-const getKeywords = () => {
-  axios.get('api/paper/getKeywords').then(res => {
-    console.log(res.data)
-    keyWords.value = res.data
-  })
-    .catch((err) => {
-      console.log(err);
-    });
+// const getKeywords = () => {
+//   axios.get('api/paper/getKeywords').then(res => {
+//     console.log(res.data)
+//     keyWords.value = res.data
+//   })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// }
+// getKeywords()
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 10);
 }
-getKeywords()
-
 
 </script>
 
 <style scoped>
+.date {
+  font-size: 14px;
+  color: #645e5e;
+}
 .layout-container {
   border: 1px solid #ccc;
 }
