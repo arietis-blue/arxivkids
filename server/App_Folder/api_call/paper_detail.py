@@ -37,8 +37,7 @@ def main(paper_json):
             paper_json["Content_plain"] = plain_content
 
             # `keywords`関数の実行結果を取得
-            keywords_json = keywords_future.result()
-            keyword_list = keywords_json["list"]
+            keyword_list = keywords_future.result()
             paper_json["Keywords"] = keyword_list
         return paper_json
     

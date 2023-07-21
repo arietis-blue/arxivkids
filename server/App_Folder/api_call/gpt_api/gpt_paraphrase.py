@@ -27,7 +27,7 @@ def paraphrase(content):
   time_end = time.time()
   # 経過時間（秒）
   tim = time_end- time_sta
-  print(tim)
+  print(f"time to paraphrase: {tim}")
   # print(result)
   return result
 
