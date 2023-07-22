@@ -96,7 +96,7 @@ const omitAbstractStore = useOmitAbstractStore()
 const { omitAbstract } = storeToRefs(omitAbstractStore)
 
 import { useHasSearchedStore } from '../stores/hasSearched'
-const { hasSearched } = storeToRefs(useHasSearchedStore())
+const { hasSearched, isFirstTimeAccess } = storeToRefs(useHasSearchedStore())
 
 import PaperRow from "../components/PaperRow.vue";
 import { Star } from "@element-plus/icons-vue"
@@ -116,7 +116,9 @@ const like = () => {
   isLoginOpen.value = true
 }
 
-const getRecommendedPapers = () => {
+// isFirstTimeAccess 写在home的话每次跳到/都会重新赋值为true
+// 故isFirstTimeAccess必须是全局的
+const firstTimeGetRecommendedPapers = () => {
   axios.get('http://127.0.0.1:8000/api/recommend/')
     .then(res => {
       console.log(res.data)
@@ -125,9 +127,13 @@ const getRecommendedPapers = () => {
     .catch((err) => {
       console.log(err)
     })
+
+    isFirstTimeAccess.value = false
 }
 
-getRecommendedPapers()
+if(isFirstTimeAccess.value){
+  firstTimeGetRecommendedPapers()
+}
 
 
 // alert('wtf')

@@ -5,8 +5,8 @@
     <el-container class="layout-container pt-10">
       <el-header class="layout-header">
         <!-- Title -->
-        <div class="font-bold text-2xl">{{ choosedPaperInfoStore.Title_En }}</div>
-        <div class="font-semibold text-xl">{{ choosedPaperInfoStore.Title_Ja }}</div>
+        <div class="font-bold text-2xl ml-4">{{ choosedPaperInfoStore.Title_En }}</div>
+        <div class="font-semibold text-xl ml-4">{{ choosedPaperInfoStore.Title_Ja }}</div>
       </el-header>
       <el-container class="inner-container">
         <el-aside class="aside-container" width="70%">
@@ -17,7 +17,7 @@
             <el-skeleton :rows="30" animated />
           </div>
 
-          <div class="mx-4 my-4">
+          <div class="mx-8 my-4">
 
             <div class="flex justify-end mb-2 ">
               <button class="rounded-l-full bg-red-500 text-black w-[80px] h-8 hover:bg-red-300"
@@ -171,6 +171,11 @@ const chooseEN = () => {
 //     });
 // }
 // getKeywords()
+
+// const getDetailPaper = () => {
+
+// }
+// getDetailPaper()
 
 function formatDate(dateString) {
     const date = new Date(dateString);
