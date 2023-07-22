@@ -15,7 +15,7 @@ from deepl_api.deepl import translate_ja
 
 # わざわざ main 関数を定義してその中に処理を書く
 def main():
-    paper_list = search('GPT')
+    paper_list = search('LLM')
     paper_list_new = []
     for paper in paper_list:
         time_sta = time.time()
@@ -23,8 +23,10 @@ def main():
         time_end = time.time()
         paper_json["Time"] = (time_end- time_sta)
         paper_list_new.append(paper_json)
+        print(paper_json["Content_Ja"])
+        print(paper_json["Content_plain"])
     # CSVファイルに書き込むためのファイル名
-    csv_filename = 'eval_result/output_normal.csv'
+    csv_filename = 'eval_result/output_4.csv'
     # CSVファイルを書き込みモードで開く
     with open(csv_filename, 'w+', newline='',encoding = 'utf-8') as csvfile:
         # CSVの列ヘッダーを定義
