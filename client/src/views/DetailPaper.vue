@@ -5,8 +5,8 @@
     <el-container class="layout-container pt-10">
       <el-header class="layout-header">
         <!-- Title -->
-        <div class="font-bold text-2xl">{{ choosedPaperInfoStore.Title_En }}</div>
-        <div class="font-semibold text-xl">{{ choosedPaperInfoStore.Title_Ja }}</div>
+        <div class="font-bold text-2xl ml-4">{{ choosedPaperInfoStore.Title_En }}</div>
+        <div class="font-semibold text-xl ml-4">{{ choosedPaperInfoStore.Title_Ja }}</div>
       </el-header>
       <el-container class="inner-container">
         <el-aside class="aside-container" width="70%">
@@ -17,18 +17,32 @@
             <el-skeleton :rows="30" animated />
           </div>
 
-          <div class="mx-4 my-4">
 
-            <div class="flex justify-end mb-2 ">
-              <button class="rounded-l-full bg-red-500 text-black w-[80px] h-8 hover:bg-red-300"
-                @click="chooseEN"
-              >
+          <div class="mx-8 my-4">
+
+            <el-tabs type="border-card">
+              <el-tab-pane label="English Abstract">
+                <div class="mt-3 text-lg mx-6">
+                  {{ currentDetailPaper.Content_En }}
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="日本語のアブストラクト">
+                <div class="mt-3 text-lg mx-6">
+                  {{ currentDetailPaper.Content_Ja }}
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="簡易な日本語" class="mt-3 text-lg mx-6">
+                {{ currentDetailPaper.Content_plain }}
+              </el-tab-pane>
+            </el-tabs>
+
+
+            <!-- <div class="flex justify-end mb-2 ">
+              <button class="rounded-l-full bg-red-500 text-black w-[80px] h-8 hover:bg-red-300" @click="chooseEN">
                 English
               </button>
               <div class="h-8 w-0.5 bg-gray-300"></div>
-              <button class="rounded-r-full bg-green-500 text-black w-[80px] h-8 hover:bg-green-300"
-                @click="chooseJP"
-              >
+              <button class="rounded-r-full bg-green-500 text-black w-[80px] h-8 hover:bg-green-300" @click="chooseJP">
                 日本語
               </button>
             </div>
@@ -40,7 +54,7 @@
               <div v-if="showEN">
                 {{ currentDetailPaper.Content_En }}
               </div>
-            </div>
+            </div> -->
 
             <!-- <div>{{ currentDetailPaper }}</div> -->
 
@@ -131,19 +145,19 @@ const { waitingPaper } = storeToRefs(waitingStore)
 import { useChoosedPaperInfoStore } from '../stores/choosedPaperInfo'
 const choosedPaperInfoStore = useChoosedPaperInfoStore()
 
-const showJP = ref(true)
-const showEN = ref(false)
+// const showJP = ref(true)
+// const showEN = ref(false)
 // const showCN = ref(false)
 
-const chooseJP = () => {
-  showJP.value = true
-  showEN.value = false
-}
+// const chooseJP = () => {
+//   showJP.value = true
+//   showEN.value = false
+// }
 
-const chooseEN = () => {
-  showJP.value = false
-  showEN.value = true
-}
+// const chooseEN = () => {
+//   showJP.value = false
+//   showEN.value = true
+// }
 
 // const paperBody = ref("sdfdsfdf")
 // const keyWords = ref([])
@@ -160,7 +174,6 @@ const chooseEN = () => {
 // }
 // getPaperBody()
 
-
 // const getKeywords = () => {
 //   axios.get('api/paper/getKeywords').then(res => {
 //     console.log(res.data)
@@ -173,8 +186,8 @@ const chooseEN = () => {
 // getKeywords()
 
 function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toISOString().slice(0, 10);
+  const date = new Date(dateString);
+  return date.toISOString().slice(0, 10);
 }
 
 // setTimeout(_ => {alert(1)}, 1000)
@@ -186,6 +199,7 @@ function formatDate(dateString) {
   font-size: 14px;
   color: #645e5e;
 }
+
 .layout-container {
   border: 1px solid #ccc;
 }
