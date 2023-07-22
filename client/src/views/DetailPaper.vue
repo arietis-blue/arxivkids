@@ -111,7 +111,7 @@
                     <template #title>
                       <span class="text-lg">{{ k_d.Keyword }}</span>
                     </template>
-                    <div class="text-base">
+                    <div class="text-base text-orange-600">
                       {{ k_d.Description }}
                     </div>
                   </el-collapse-item>
