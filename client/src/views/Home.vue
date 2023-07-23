@@ -18,25 +18,31 @@
           </div>
 
           <!-- fixed固定住，不会随着scrollなくなる -->
-          <div class="fixed flex flex-col justify-start mx-2 space-y-6">
+          <!-- space-y-6放着的话，mt mb都无效；  -->
+          <div class="fixed flex flex-col justify-start mx-2">
             <div class="rounded bg-gradient-to-r from-gray-100 to-gray-200 w-[160px] h-[40px] flex items-center justify-center">
-              <span v-show="!hasSearched" class="text-[15px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-600">Recommend for you</span>
-              <span v-show="hasSearched" class="text-[15px] font-bold text-gray-600">Search result</span>
+              <!-- <span v-show="!hasSearched" class="text-[15px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-600">Recommend for you</span> -->
+              <span v-show="!hasSearched" class="text-[15px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-600">{{ t('recommendForYou') }}</span>
+              <!-- <span v-show="hasSearched" class="text-[15px] font-bold text-gray-600">Search result</span> -->
+              <span v-show="hasSearched" class="text-[15px] font-bold text-gray-600">{{ t('searchResult') }}</span>
             </div>
 
-            <el-switch
-              v-model="omitAbstract"
-              class="mb-2"
-              style="--el-switch-on-color: #b91026; --el-switch-off-color: #c99898"
-              active-text="Show abstracts"
-              inactive-text="Hide abstracts"
-            />
+            <div class="border w-[160px] mt-4 ring-2 hover:ring-4">
+              <div class="flex items-center justify-center">{{ t('abstract') }}</div>
+              <el-switch
+                v-model="omitAbstract"
+                class="mx-auto px-4"
+                style="--el-switch-on-color: #b91026; --el-switch-off-color: #c99898"
+                :active-text="t('show')"
+                :inactive-text="t('hide')"
+              />
+            </div>
           </div>
           
           <!-- {{ fivePapersStore.fivePapers}} -->
 
           <!-- <div class="flex justify-center"> 上下两个的区别好好体会，怎么居中，居中的是什么 -->
-          <div class="grid justify-items-center space-y-6">
+          <div class="grid justify-items-center space-y-6 ml-12">
             <!-- v-for显示10篇论文 -->
             <div v-for="paper in fivePapersStore.fivePapers" :key="paper.Paper_ID"
               class="flex items-center space-x-3"
@@ -75,6 +81,8 @@ import { ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 const route = useRoute()
 const router = useRouter()
+import { useI18n } from 'vue-i18n'
+const { locale, t } =useI18n()
 
 import { storeToRefs } from 'pinia'
 import { useIsLoginOpenStore } from '../stores/isLoginOpen'

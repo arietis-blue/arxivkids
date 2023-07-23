@@ -2,20 +2,33 @@
   <div id="TopNav" class="fixed bg-neutral-700 mt-0.5 z-30 flex items-center w-full border-b h-[70px]">
     <div class="flex items-center justify-between w-full px-6 mx-auto">
 
-      <router-link :to="{name: 'Home'}">
+      <router-link :to="{ name: 'Home' }">
         <img src="../assets/arxiv-logo-1-300x135.png" style="transform: scale(0.6);">
       </router-link>
 
       <div class="hidden md:flex items-center bg-[#F1F1F2] p-1 rounded-full max-w-[580px] w-full ">
-        <input type="text" class="w-full pl-3 my-2 bg-transparent placeholder-[#838383] text-[15px] focus:outline-none text-black"
-          v-model="searchContent" placeholder="Search papers">
+        <input type="text"
+          class="w-full pl-3 my-2 bg-transparent placeholder-[#838383] text-[15px] focus:outline-none text-black"
+          v-model="searchContent" :placeholder="t('searchPapers')">
         <div class="px-3 py-1 flex items-center border-l border-l-gray-300">
           <el-button :icon="Search" circle @click="getFivePapers" />
         </div>
       </div>
 
 
-      <div class="flex items-center justify-end gap-3 min-w-[275px] max-w-[320px] w-full">
+      <div class="flex items-center justify-end gap-3 min-w-[275px] max-w-[350px] w-full">
+        <!-- switch multi language -->
+        <el-dropdown trigger="hover">
+          <TranslateIcon :size="30" />
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="changeLanguage('en')">English</el-dropdown-item>
+              <el-dropdown-item @click="changeLanguage('ja')">日本語</el-dropdown-item>
+              <el-dropdown-item @click="changeLanguage('zh-cn')">中文</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+
         <!-- dark mode -->
         <div class="flex items-center mr-5">
           <button @click="toggleDark()" class="mr-1">
@@ -30,7 +43,8 @@
           <!-- <button @click="$generalStore.isLoginOpen = true" -->
           <button @click="isLoginOpenStore.isLoginOpen = true; isLogined = true"
             class="flex items-center bg-red-600 hover:bg-red-400 text-white font-semibold border rounded-md px-3 py-[6px] ring-2 ring-gray-300 hover:ring-4 hover:ring-red-300">
-            <span class="mx-2 font-medium ">Log in</span>
+            <!-- <span class="mx-2 font-medium ">Log in</span> -->
+            <span class="mx-2 font-medium ">{{ t('login') }}</span>
           </button>
         </div>
 
@@ -79,12 +93,19 @@ import { Search } from "@element-plus/icons-vue"
 import StarOutlineIcon from "vue-material-design-icons/StarOutline.vue";
 import AccountIcon from "vue-material-design-icons/Account.vue";
 import LogoutVariantIcon from "vue-material-design-icons/LogoutVariant.vue";
+import TranslateIcon from "vue-material-design-icons/Translate.vue";
+
+import { useI18n } from 'vue-i18n'
+const { locale, t } =useI18n()
+function changeLanguage(lang) {
+  locale.value = lang
+}
 
 import { useDark, useToggle } from '@vueuse/core'
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 import { Sunny, Moon } from '@element-plus/icons-vue'
-  
+
 import { useIsLoginOpenStore } from '../stores/isLoginOpen'
 const isLoginOpenStore = useIsLoginOpenStore()
 
@@ -111,35 +132,35 @@ const searchContent = ref("")
 
 //输出1,3,2 post前的命令执行完，不会等post，直接去执行post后面的
 const getFivePapers = () => {
-  router.push({name: 'Home'})
+  router.push({ name: 'Home' })
   waitingArxiv.value = true //pinia的东西要是storeToRefs变成响应式的了，使用就要.value
   // console.log(1)
   console.log(searchContent)
   //别忘了script要value，之前"Search": searchContent就错了  有问题console.log()检查
-  if(searchContent.value.trim() === ""){
+  if (searchContent.value.trim() === "") {
     axios.get('http://127.0.0.1:8000/api/recommend/')
-    .then(res => {
-      waitingArxiv.value = false
-      hasSearched.value = false
-      console.log(res.data)
-      fivePapersStore.fivePapers = res.data
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then(res => {
+        waitingArxiv.value = false
+        hasSearched.value = false
+        console.log(res.data)
+        fivePapersStore.fivePapers = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
-  else{
+  else {
     axios.post('http://127.0.0.1:8000/api/arxiv/', { "Search": searchContent.value })
-    .then(res => {
-      // console.log(2)
-      waitingArxiv.value = false
-      hasSearched.value = true
-      console.log(res.data)
-      fivePapersStore.fivePapers = res.data //pinia的东西不用.value
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then(res => {
+        // console.log(2)
+        waitingArxiv.value = false
+        hasSearched.value = true
+        console.log(res.data)
+        fivePapersStore.fivePapers = res.data //pinia的东西不用.value
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   // console.log(3)
 }
@@ -150,7 +171,7 @@ const getFivePapers = () => {
 
 const logout = () => {
   isLogined.value = false
-  router.push({name: 'Home'})
+  router.push({ name: 'Home' })
   try {
     // $userStore.logout()
   } catch (error) {

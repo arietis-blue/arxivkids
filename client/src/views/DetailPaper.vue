@@ -66,7 +66,7 @@
         <el-container class="main-footer-container">
           <el-main class="main-container">
             <div>
-              <span class="mr-4">Authors:</span>
+              <span class="mr-4">{{ t('authors') }}:</span>
               <!-- {{ choosedPaperInfoStore.Authors }} -->
               <!-- bug:最后一个item会显示, -->
               <span v-for="name in choosedPaperInfoStore.Authors" :key="name" class="mr-2 text-blue-600">
@@ -75,13 +75,13 @@
             </div>
 
             <div>
-              <span class="mr-4">Published:</span>
+              <span class="mr-4">{{ t('published') }}:</span>
               <!-- {{ choosedPaperInfoStore.Published }} -->
               <span class="date">{{ formatDate(choosedPaperInfoStore.Published) }}</span>
             </div>
 
             <div>
-              <span class="mr-4">Categories:</span>
+              <span class="mr-4">{{ t('categories') }}:</span>
               <!-- {{ choosedPaperInfoStore.Categories }} -->
               <!-- bug:最后一个item会显示, -->
               <span v-for="Category in choosedPaperInfoStore.Categories" :key="Category" class="mr-2 ">
@@ -90,7 +90,7 @@
             </div>
 
             <div>
-              <span class="mr-4">Download:</span>
+              <span class="mr-4">{{ t('download') }}:</span>
               <a :href="choosedPaperInfoStore.Pdf_url" class="underline decoration-dashed decoration-pink-600">[pdf]</a>
             </div>
 
@@ -111,7 +111,7 @@
                     <template #title>
                       <span class="text-lg">{{ k_d.Keyword }}</span>
                     </template>
-                    <div class="text-base">
+                    <div class="text-base text-orange-600">
                       {{ k_d.Description }}
                     </div>
                   </el-collapse-item>
@@ -133,6 +133,9 @@
 import { ref } from "vue"
 import axios from 'axios'
 // import '../mock/paper'
+import { useI18n } from 'vue-i18n'
+const { t } =useI18n()
+
 import { storeToRefs } from 'pinia'
 import { useCurrentDetailPaperStore } from '../stores/currentDetailPaper'
 const { currentDetailPaper } = storeToRefs(useCurrentDetailPaperStore())
