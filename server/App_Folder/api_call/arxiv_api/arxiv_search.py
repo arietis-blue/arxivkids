@@ -4,7 +4,7 @@ from pathlib import Path
 
 # カテゴリーの対応表のjsonファイルの読み取り
 parent = Path(__file__).resolve().parent
-with open(parent.joinpath("cat_dic.json")) as f:
+with open(parent.joinpath("cat_dic_jp.json")) as f:
     cat_dic = json.load(f)
 
 
