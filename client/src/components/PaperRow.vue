@@ -1,7 +1,7 @@
 <template>
     <!-- PaperRow -->
     <!-- w-[1060px]不固定的话，有些paper会不知道为什么超级宽 -->
-    <div class="w-[1060px] my-2 overflow-hidden flex flex-col justify-between rounded-2xl shadow-2xl  hover:ring-2 ring-gray-500
+    <div class="w-[850px] my-2 overflow-hidden flex flex-col justify-between rounded-2xl shadow-2xl  hover:ring-2 ring-gray-500
         border-b hover:border-t hover:border-y-2 hover:border-x cursor-pointer"
         :class="[omitAbstract ? 'h-[260px]' : 'h-[160px]']"
         :style="{ backgroundColor: getRandomLightColor() }"

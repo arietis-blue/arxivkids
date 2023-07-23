@@ -26,7 +26,7 @@
                   {{ currentDetailPaper.Content_En }}
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="日本語のアブストラクト">
+              <el-tab-pane label="日本語の要旨">
                 <div class="mt-3 text-lg mx-6">
                   {{ currentDetailPaper.Content_Ja }}
                 </div>
