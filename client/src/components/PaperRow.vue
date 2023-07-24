@@ -5,16 +5,20 @@
         border-b hover:border-t hover:border-y-2 hover:border-x cursor-pointer"
         :class="[omitAbstract ? 'h-[260px]' : 'h-[160px]']"
         :style="{ backgroundColor: getRandomLightColor() }"
-        @click="goDetailPaper"
     >
 
         <div class="mx-2 flex -mb-1">
             <div class="mr-2">{{ Paper_ID }}</div>
-            <el-icon><Link /></el-icon>
-            <a :href="Pdf_url" class="underline decoration-dashed decoration-pink-600">[pdf]</a>
+            
+            <a :href="Pdf_url" target="_blank" class="underline decoration-dashed decoration-pink-600">
+                <el-icon><Link /></el-icon>
+                [pdf]
+            </a>
         </div>
 
-        <div class="flex flex-col justify-center items-center text-xl hover:italic" :style="{ backgroundColor: getRandomLightColor() }">
+        <div class="flex flex-col justify-center items-center text-xl hover:italic" :style="{ backgroundColor: getRandomLightColor() }"
+            @click="goDetailPaper"
+        >
             <div class="mr-3 font-bold text-gray-950">{{ Title_En }}</div>
             <div class="font-semibold text-gray-800">{{ Title_Ja }}</div>
         </div>

@@ -22,16 +22,16 @@
 
             <el-tabs type="border-card">
               <el-tab-pane label="English Abstract">
-                <div class="mt-3 text-lg mx-6">
+                <div class="mt-3 text-lg mx-6 indent-8">
                   {{ currentDetailPaper.Content_En }}
                 </div>
               </el-tab-pane>
               <el-tab-pane label="日本語の要旨">
-                <div class="mt-3 text-lg mx-6">
+                <div class="mt-3 text-lg mx-6 indent-8">
                   {{ currentDetailPaper.Content_Ja }}
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="簡易な日本語" class="mt-3 text-lg mx-6">
+              <el-tab-pane label="簡易な日本語" class="mt-3 text-lg mx-6 indent-8">
                 {{ currentDetailPaper.Content_plain }}
               </el-tab-pane>
             </el-tabs>
@@ -64,7 +64,7 @@
         </el-aside>
 
         <el-container class="main-footer-container">
-          <el-main class="main-container">
+          <el-main class="main-container space-y-2">
             <div>
               <span class="mr-4">{{ t('authors') }}:</span>
               <!-- {{ choosedPaperInfoStore.Authors }} -->
@@ -91,7 +91,7 @@
 
             <div>
               <span class="mr-4">{{ t('download') }}:</span>
-              <a :href="choosedPaperInfoStore.Pdf_url" class="underline decoration-dashed decoration-pink-600">[pdf]</a>
+              <a :href="choosedPaperInfoStore.Pdf_url" target="_blank" class="underline decoration-dashed decoration-pink-600">[pdf]</a>
             </div>
 
 
