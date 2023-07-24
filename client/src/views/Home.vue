@@ -20,14 +20,20 @@
           <!-- fixed固定住，不会随着scrollなくなる -->
           <!-- space-y-6放着的话，mt mb都无效；  -->
           <div class="fixed flex flex-col justify-start mx-2">
-            <div class="rounded bg-gradient-to-r from-gray-100 to-gray-200 w-[130px] h-[40px] flex items-center justify-center">
+            <div class="rounded w-[130px] h-[40px] flex items-center justify-center"
+                :class="[isDark ? 'bg-neutral-700' : 'bg-neutral-200']"
+            >
               <!-- <span v-show="!hasSearched" class="text-[15px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-600">Recommend for you</span> -->
-              <span v-show="!hasSearched" class="text-[15px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-600">{{ t('recommendForYou') }}</span>
+              <span v-show="!hasSearched" class="text-[15px] font-bold" :class="[isDark ? 'text-gray-200' : 'text-gray-700']">
+                {{ t('recommendForYou') }}
+              </span>
               <!-- <span v-show="hasSearched" class="text-[15px] font-bold text-gray-600">Search result</span> -->
-              <span v-show="hasSearched" class="text-[15px] font-bold text-gray-600">{{ t('searchResult') }}</span>
+              <span v-show="hasSearched" class="text-[15px] font-bold" :class="[isDark ? 'text-gray-200' : 'text-gray-700']">
+                {{ t('searchResult') }}
+              </span>
             </div>
 
-            <div class="border w-[130px] h-[60px] mt-4 ring-2 hover:ring-4">
+            <div class="border w-[130px] h-[60px] mt-4 ring-2 hover:ring-4" :class="[isDark ? 'bg-neutral-700' : 'bg-neutral-200']">
               <div class="flex items-center justify-center">{{ t('abstract') }}</div>
               <el-switch
                 v-model="omitAbstract"
@@ -83,6 +89,9 @@ const route = useRoute()
 const router = useRouter()
 import { useI18n } from 'vue-i18n'
 const { locale, t } =useI18n()
+
+import { useDark } from '@vueuse/core'
+const isDark = useDark()
 
 import { storeToRefs } from 'pinia'
 import { useIsLoginOpenStore } from '../stores/isLoginOpen'
