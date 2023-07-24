@@ -3,8 +3,7 @@
     <!-- w-[1060px]不固定的话，有些paper会不知道为什么超级宽 -->
     <div class="w-[850px] my-2 overflow-hidden flex flex-col justify-between rounded-2xl shadow-2xl  hover:ring-2 ring-gray-500
         border-b hover:border-t hover:border-y-2 hover:border-x cursor-pointer"
-        :class="[omitAbstract ? 'h-[260px]' : 'h-[160px]']"
-        :style="{ backgroundColor: getRandomLightColor() }"
+        :class="[omitAbstract ? 'h-[260px]' : 'h-[160px]', isDark ? 'bg-neutral-700' : 'bg-neutral-200']"
     >
 
         <div class="mx-2 flex -mb-1">
@@ -16,7 +15,7 @@
             </a>
         </div>
 
-        <div class="flex flex-col justify-center items-center text-xl hover:italic" :style="{ backgroundColor: getRandomLightColor() }"
+        <div class="flex flex-col justify-center items-center text-xl hover:italic bg-rose-500"
             @click="goDetailPaper"
         >
             <div class="mr-3 font-bold text-gray-950">{{ Title_En }}</div>
@@ -25,19 +24,19 @@
         
         <div v-show="omitAbstract" class="px-6">
             <el-scrollbar height="90px">
-                <p class="text-gray-700 text-base font-semibold">
-                    {{  Content_En }}
+                <p class="text-base font-semibold" :class="[isDark ? 'text-gray-200' : 'text-gray-700']">
+                    {{ Content_En }}
                 </p>
             </el-scrollbar>
         </div>
             
         <div class="ml-1 truncate">
             <span class="mr-2">Authors:</span>
-            {{ Authors }}
+            {{ Authors.join(', ') }}
         </div>
         <div class="flex mx-2 -mt-3">
             <span class="mr-2">Submitted:</span>
-            <p class="date">{{ formatDate(Published) }}</p>
+            <p class="date pt-0.5">{{ formatDate(Published) }}</p>
         </div>
     </div>
 </template>
@@ -77,6 +76,9 @@ const { waitingPaper } = storeToRefs(waitingStore)
 
 import { useChoosedPaperInfoStore } from '../stores/choosedPaperInfo'
 const choosedPaperInfoStore = useChoosedPaperInfoStore()
+
+import { useDark } from '@vueuse/core'
+const isDark = useDark()
 
 function getRandomLightColor() {
     return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
@@ -157,6 +159,5 @@ const goDetailPaper = () => {
 <style scoped>
 .date {
   font-size: 14px;
-  color: #645e5e;
 }
 </style>

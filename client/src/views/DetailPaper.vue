@@ -3,7 +3,7 @@
 
   <div class="common-layout pt-12">
     <el-container class="layout-container pt-10">
-      <el-header class="layout-header">
+      <el-header class="layout-header" height="100px">
         <!-- Title -->
         <div class="font-bold text-2xl ml-4">{{ choosedPaperInfoStore.Title_En }}</div>
         <div class="font-semibold text-xl ml-4">{{ choosedPaperInfoStore.Title_Ja }}</div>
