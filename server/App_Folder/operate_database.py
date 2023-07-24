@@ -15,6 +15,7 @@ def search_rank():
                 "Authors"    : content.Authors.split(","),
                 "Categories" : content.Categories.split(","),
                 "Published"  : content.Published,
+                "Pdf_url"    : content.Pdf_url,
                 "Content_En" : content.Content_En,
                 "Search_num" : content.Search_num
             }
