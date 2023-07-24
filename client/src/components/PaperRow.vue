@@ -124,11 +124,12 @@ const goDetailPaper = () => {
         .then(res => {
             // console.log(2)
             waitingPaper.value = false
-            console.log(res.data)
+            // console.log(res.data)
             currentDetailPaper.value = res.data
+            localStorage.setItem('current_paper_detail', JSON.stringify(res.data));
         })
         .catch((err) => {
-            console.log(err)
+            // console.log(err)
         })
     // console.log(3)
 
@@ -144,6 +145,9 @@ const goDetailPaper = () => {
     console.log(Pdf_url.value)
     console.log(choosedPaperInfoStore.Pdf_url)
     console.log(Categories.value)
+
+    localStorage.setItem('status', "false")
+
 
     // 加入historyList
 }
