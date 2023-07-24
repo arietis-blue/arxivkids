@@ -1,3 +1,5 @@
+
+
 # 環境変数にAPIキーを設定
 import os
 from dotenv import load_dotenv
@@ -205,9 +207,9 @@ def keywords_steps(content,category):
   category_prompt = ",\n".join(category)
   
   prompt = """
-           Task: Please extract five technical terms in Japanese.
-           Format example:
-           {'list':[
+          [CLS]Task: Please extract five technical terms in Japanese.
+          Format:
+          {'list':[
              {
                'Keyword':"keyword_1_name"
              },
@@ -217,15 +219,43 @@ def keywords_steps(content,category):
             {
                'Keyword':"keyword_3_name"
              },
-            ,,,
             {
-               'Keyword':"keyword_n_name"
+               'Keyword':"keyword_4_name"
+             },
+            {
+               'Keyword':"keyword_5_name"
              }           ]}
-          Paper abstract:
+             [SEP]
+             
+          Input Abstract(Example):
+          大規模言語モデル(LLM)は、教師あり命令/応答データに対する命令-微調整(IFT)によって命令追従能力を得る。しかし、広く使われているIFTデータセット(例えばAlpacaの52kデータ)には、意外にも、誤った回答や無関係な回答を含む低品質なインスタンスが多く含まれており、IFTにとって誤解を招き有害である。本論文では、強力なLLM(例えばChatGPT)を用いて低品質なデータを自動的に識別し除去する、シンプルで効果的なデータ選択戦略を提案する。この目的のために、我々はAlpaGasusを導入する。AlpaGasusは、52kのAlpacaデータからフィルタリングされた9kの高品質データのみで微調整される。AlpaGasusは、複数のテストセットにおいてGPT-4で評価されたオリジナルのAlpacaを大幅に上回り、その13B変種はテストタスクにおいて教師LLM（すなわちText-Davinci-003）の$>90%$性能と一致する。また、Alpaca(7B)と同じエポック数で、より少ないデータで、4$times$NVIDIA A100(80GB)のGPUを使用し、元のAlpacaの設定とハイパーパラメータに従って、IFTを適用する。全体として、AlpaGasusは、新しいデータ中心IFTパラダイムを実証しており、命令チューニングデータに一般的に適用することができ、より高速な学習とより良い命令追従モデルにつながります。私たちのプロジェクトページは、∕URL{https://lichang-chen.github.io/AlpaGasus/}にあります。'
+          Output keywords_list(Example):
+           {'list':[
+             {
+               'Keyword':"大規模言語モデル"
+             },
+            {
+               'Keyword':"インスタンス"
+             },
+            {
+               'Keyword':"Alpaca"
+             } ,
+            {
+               'Keyword':"エポック"
+             },
+            {
+               'Keyword':"命令チューニング"
+             }          ]}
+            [SEP]
+             
+          Input Abstract:\n
            """\
-          + content
+          + content \
+          + "\nOutput keywords_list: \n"
+          
+  print(f"prompt of keywords name:\n {prompt}")
   completion_name = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo-0613",
+    model="gpt-3.5-turbo-16k-0613",
     messages=[
       {"role": "system", "content": "You are an expert in the following academic areas\n" + category_prompt},
       {"role": "user", "content": prompt}
@@ -255,10 +285,10 @@ def keywords_steps(content,category):
   "required": ["Description"]
   }       
   prompt = """
-           Task: Please make descriptions for each five keywords in Japanese .
+          [CLS]Task: Please make descriptions for each five keywords about following abstract in Japanese.
            Limit: Each description must be written in around 100 Japanese characters.
-           Format example:
-           {'list':[
+           Format:
+            {'list':[
              {
                'Description':"keyword_1_description"
              },
@@ -268,15 +298,63 @@ def keywords_steps(content,category):
             {
                'Description':"keyword_3_description"
              },
-            ,,,
             {
-               'Description':"keyword_n_description"
-             }           ]}
-          Keywords_list:
+               'Description':"keyword_4_description"
+             },
+            {
+               'Description':"keyword_5_description"
+             }            ]}
+            [SEP]
+             
+	        Input1 Keywords_list(Example):
+           {'list':[
+             {
+               'Keyword':"大規模言語モデル"
+             },
+            {
+               'Keyword':"インスタンス"
+             },
+            {
+               'Keyword':"Alpaca"
+             } ,
+            {
+               'Keyword':"エポック"
+             },
+            {
+               'Keyword':"命令チューニング"
+             }          ]}
+          Input2 Abstract(Example):
+          大規模言語モデル(LLM)は、教師あり命令/応答データに対する命令-微調整(IFT)によって命令追従能力を得る。しかし、広く使われているIFTデータセット(例えばAlpacaの52kデータ)には、意外にも、誤った回答や無関係な回答を含む低品質なインスタンスが多く含まれており、IFTにとって誤解を招き有害である。本論文では、強力なLLM(例えばChatGPT)を用いて低品質なデータを自動的に識別し除去する、シンプルで効果的なデータ選択戦略を提案する。この目的のために、我々はAlpaGasusを導入する。AlpaGasusは、52kのAlpacaデータからフィルタリングされた9kの高品質データのみで微調整される。AlpaGasusは、複数のテストセットにおいてGPT-4で評価されたオリジナルのAlpacaを大幅に上回り、その13B変種はテストタスクにおいて教師LLM（すなわちText-Davinci-003）の$>90%$性能と一致する。また、Alpaca(7B)と同じエポック数で、より少ないデータで、4$times$NVIDIA A100(80GB)のGPUを使用し、元のAlpacaの設定とハイパーパラメータに従って、IFTを適用する。全体として、AlpaGasusは、新しいデータ中心IFTパラダイムを実証しており、命令チューニングデータに一般的に適用することができ、より高速な学習とより良い命令追従モデルにつながります。私たちのプロジェクトページは、∕URL{https://lichang-chen.github.io/AlpaGasus/}にあります。'
+          
+	        Output Description(Example):
+            {'list':[
+             {
+               'Description':"「大規模言語モデル」(large language model)は、大規模なデータセットを使って学習させた言語モデルのことです。 文章の続きを予測することで、質問への回答や文章要約、機械翻訳など幅広いタスクを高い精度で行うことができます。"
+             },
+            {
+               'Description':"「インスタンス」(instance)はデータセット内の個々のデータサンプルを指します。例えば、教師あり命令/応答データセットにおいて、1つの質問とその回答が1つのインスタンスとなります。"
+             },
+            {
+               'Description':"「Alpaca」はスタンフォード大学を中心として開発された言語モデルの名前です。"LLaMA"をファインチューニングしたモデルであり、少ないパラメータで高い精度を発揮することが特徴です。"
+             },
+            {
+               'Description':"「エポック」(Epoch)とは機械学習やディープラーニングにおいて、訓練データ全体を何度も反復して学習させる単位を指します。1つのエポックは、訓練データ全体を1回処理することを意味します。"
+             },
+            {
+               'Description':"「命令チューニング」(Instruction tuning)とは、言語モデルに命令の形式を学習させる手法のことです。多様な命令文と回答のセットを与えることで、未知の命令にも対応することができます。"
+             }            ]}	
+            [SEP]
+
+          Input1 Keywords_list:
            """\
-          + result_str_name
+          + result_str_name \
+          + "\n Input2 Abstract: "\
+          + content \
+          + "\n Output Description:\n"
+          
+  print(f"prompt of keywords description:\n {prompt}")
   completion_description = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo-0613",
+    model="gpt-3.5-turbo-16k-0613",
     messages=[
       {"role": "system", "content": "You are an expert in the following academic areas\n" + category_prompt},
       {"role": "user", "content": prompt}
@@ -286,7 +364,7 @@ def keywords_steps(content,category):
     temperature=0,
   )
   result_str_description = (completion_description.choices[0].message.function_call.arguments)
-
+  print(result_str_description)
   try:
     result_name = json.loads(result_str_name)
     result_description = json.loads(result_str_description)
