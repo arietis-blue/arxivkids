@@ -11,14 +11,6 @@ from pdb import set_trace
 from django.shortcuts import render, redirect
 
 
-def view_one(request):
-    # ビュー関数でセッションに値をセット
-    
-    # print("come to view1")
-    # print(request.session["Paper_detail"])
-    return redirect('paper')
-
-
 # Arxiv_Searchのgetメソッドを用いたDebug用 
 search = {
     "Search": "LLM cat:cs.CL"
