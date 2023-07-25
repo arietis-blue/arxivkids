@@ -1,5 +1,5 @@
 from django.urls import path
-from App_Folder.views import Arxiv_Search, Paper_detail, Paper_recommend, view_one
+from App_Folder.views import Arxiv_Search, Paper_detail, Paper_recommend
 
 urlpatterns = [
     # 入力したキーワードによる検索結果を表示
