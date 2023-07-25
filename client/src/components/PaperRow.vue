@@ -122,16 +122,17 @@ const goDetailPaper = () => {
         // "Content_En": "An Intrusion detection system (IDS) is essential for avoiding maliciousactivity. Mostly, IDS will be improved by machine learning approaches, but themodel efficiency is degrading because of more headers (or features) present inthe packet (each record). The proposed model extracts practical features usingNon-negative matrix factorization and chi-square analysis. The more number offeatures increases the exponential time and risk of overfitting the model.Using both techniques, the proposed model makes a hierarchical approach thatwill reduce the features quadratic error and noise. The proposed model isimplemented on three publicly available datasets, which gives significantimprovement. According to recent research, the proposed model has improvedperformance by 4.66% and 0.39% with respective NSL-KDD and CICD 2017.",
         // "Pdf_url": "http://arxiv.org/pdf/2304.01166v1"
     
-    // })
-    //     .then(res => {
-    //         // console.log(2)
-    //         waitingPaper.value = false
-    //         console.log(res.data)
-    //         currentDetailPaper.value = res.data
-    //     })
-    //     .catch((err) => {
-    //         console.log(err)
-    //     })
+    })
+        .then(res => {
+            // console.log(2)
+            waitingPaper.value = false
+            // console.log(res.data)
+            currentDetailPaper.value = res.data
+            localStorage.setItem('current_paper_detail', JSON.stringify(res.data));
+        })
+        .catch((err) => {
+            // console.log(err)
+        })
     // console.log(3)
 
     //已经入手的数据先展示在detailpaper上
@@ -149,7 +150,8 @@ const goDetailPaper = () => {
     console.log(choosedPaperInfoStore.Pdf_url)
     console.log(Categories.value)
 
-    router.push('/detailpaper')
+    localStorage.setItem('status', "false")
+
 
     // 加入historyList
 }

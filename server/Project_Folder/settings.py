@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-qwvo4sb$4ww3pe+msrohp%t&%sj!g-*9fo_q-gi!&e0a2et1)-
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
+#セッションの有効化
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 # Application definition
 
 INSTALLED_APPS = [
@@ -109,7 +109,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:5173',
     'http://localhost:8000',
     'http://localhost:8080',
-    'http://localhost:5173',
+    'http://localhost:5173'
 )
 
 

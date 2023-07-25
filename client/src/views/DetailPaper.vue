@@ -136,10 +136,21 @@ import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 const { t } =useI18n()
 
+
+
 import { storeToRefs } from 'pinia'
-// import { useCurrentDetailPaperStore } from '../stores/currentDetailPaper'
+import { useCurrentDetailPaperStore } from '../stores/currentDetailPaper'
 // const { currentDetailPaper } = storeToRefs(useCurrentDetailPaperStore())
-const detailPaper = ref([])
+
+let revisit = localStorage.getItem('status');
+
+let currentDetailPaper;
+if (revisit == "false") {
+  currentDetailPaper  = storeToRefs(useCurrentDetailPaperStore()).currentDetailPaper;
+} else {
+  currentDetailPaper = JSON.parse(localStorage.getItem('current_paper_detail'));
+  // console.log(currentDetailPaper)
+}
 
 import { useWaitingStore } from '../stores/waiting'
 const waitingStore = useWaitingStore()
@@ -147,7 +158,18 @@ const { waitingPaper } = storeToRefs(waitingStore)
 //pinia的东西要是storeToRefs变成响应式的了，使用就要.value
 
 import { useChoosedPaperInfoStore } from '../stores/choosedPaperInfo'
-const choosedPaperInfoStore = useChoosedPaperInfoStore()
+
+
+let choosedPaperInfoStore;
+if (revisit == "false") {
+  choosedPaperInfoStore = useChoosedPaperInfoStore();
+  localStorage.setItem('current_paper', JSON.stringify(choosedPaperInfoStore));
+  let revisit = "true";
+  localStorage.setItem('status', revisit);
+} else {
+  choosedPaperInfoStore = JSON.parse(localStorage.getItem('current_paper'));
+}
+
 
 // const showJP = ref(true)
 // const showEN = ref(false)

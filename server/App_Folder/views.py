@@ -8,6 +8,15 @@ from .api_call import search_paper, paper_detail
 from .operate_database import search_titles, search_papers, add_title, add_content_keywords, delete
 from .recommentation_main import recommendation
 from pdb import set_trace
+from django.shortcuts import render, redirect
+
+
+def view_one(request):
+    # ビュー関数でセッションに値をセット
+    
+    # print("come to view1")
+    # print(request.session["Paper_detail"])
+    return redirect('paper')
 
 
 # Arxiv_Searchのgetメソッドを用いたDebug用 
@@ -32,6 +41,7 @@ class Arxiv_Search(APIView):
         for paper in search_result_list:
             # Paper_IDを取得
             paper_id = paper["Paper_ID"]
+        
 
             # 既に論文があればそのまま取得、なければ空のjson(=まだ検索されたことのない論文)を返す。
             paper_json = search_titles(paper_id)
@@ -82,10 +92,21 @@ class Paper_detail(APIView):
         # return Response(paper_detail.main(contents))
     
     def post(self, request, *args, **kwargs):
-        search_paper_json = request.data
+        if request.data is None:
+
+            search_paper_json = request.session.get('Paper_detail') 
+            print(search_paper_json)
+            print("二回目")
+        
+        else:
+            request.session["Paper_detail"] = request.data
+            search_paper_json = request.data
+            print("一回目")
+
         # return Response(paper_detail.main(search_json))
         
         # Paper_IDを取得
+
         paper_id = search_paper_json["Paper_ID"]
 
         # 既に日本語付き論文があればそのまま取得、なければ空のjson(=まだ検索されたことのない論文)を返す。
