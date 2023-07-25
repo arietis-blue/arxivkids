@@ -71,8 +71,8 @@ const waitingStore = useWaitingStore()
 const { waitingPaper } = storeToRefs(waitingStore)
 //pinia的东西要是storeToRefs变成响应式的了，使用就要.value
 
-// import { useCurrentDetailPaperStore } from '../stores/currentDetailPaper'
-// const { currentDetailPaper } = storeToRefs(useCurrentDetailPaperStore())
+import { useCurrentDetailPaperStore } from '../stores/currentDetailPaper'
+const { currentDetailPaper } = storeToRefs(useCurrentDetailPaperStore())
 
 import { useChoosedPaperInfoStore } from '../stores/choosedPaperInfo'
 const choosedPaperInfoStore = useChoosedPaperInfoStore()
@@ -91,20 +91,20 @@ function formatDate(dateString) {
 
 //输出1,3,2 post前的命令执行完，不会等post，直接去执行post后面的
 const goDetailPaper = () => {
-    // router.push('/detailpaper')
+    router.push('/detailpaper')
     // axios获取detailpaper的数据 访问后端api/paper
-    // waitingPaper.value = true
+    waitingPaper.value = true
     // console.log(1)
-    // axios.post('http://127.0.0.1:8000/api/paper/', {
-    //     //又忘了.value了
-    //     "Paper_ID": Paper_ID.value,
-    //     "Title_En": Title_En.value,
-    //     "Title_Ja": Title_Ja.value,
-    //     "Authors": Authors.value,
-    //     "Categories": Categories.value,
-    //     "Published": Published.value,
-    //     "Content_En": Content_En.value,
-    //     "Pdf_url": Pdf_url.value
+    axios.post('http://127.0.0.1:8000/api/paper/', {
+        //又忘了.value了
+        "Paper_ID": Paper_ID.value,
+        "Title_En": Title_En.value,
+        "Title_Ja": Title_Ja.value,
+        "Authors": Authors.value,
+        "Categories": Categories.value,
+        "Published": Published.value,
+        "Content_En": Content_En.value,
+        "Pdf_url": Pdf_url.value
         
         // "Paper_ID": "http://arxiv.org/abs/2304.01166v1",
         // "Title_En": "Effective Feature Extraction for Intrusion Detection System using Non-negative Matrix Factorization and Univariate analysis",
@@ -131,7 +131,7 @@ const goDetailPaper = () => {
             localStorage.setItem('current_paper_detail', JSON.stringify(res.data));
         })
         .catch((err) => {
-            // console.log(err)
+            console.log(err)
         })
     // console.log(3)
 
