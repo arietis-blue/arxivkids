@@ -3,8 +3,7 @@
     <!-- w-[1060px]不固定的话，有些paper会不知道为什么超级宽 -->
     <div class="w-[850px] my-2 overflow-hidden flex flex-col justify-between rounded-2xl shadow-2xl  hover:ring-2 ring-gray-500
         border-b hover:border-t hover:border-y-2 hover:border-x cursor-pointer"
-        :class="[omitAbstract ? 'h-[260px]' : 'h-[160px]']"
-        :style="{ backgroundColor: getRandomLightColor() }"
+        :class="[omitAbstract ? 'h-[260px]' : 'h-[160px]', isDark ? 'bg-neutral-700' : 'bg-neutral-200']"
     >
 
         <div class="mx-2 flex -mb-1">
@@ -16,7 +15,7 @@
             </a>
         </div>
 
-        <div class="flex flex-col justify-center items-center text-xl hover:italic" :style="{ backgroundColor: getRandomLightColor() }"
+        <div class="flex flex-col justify-center items-center text-xl hover:italic bg-rose-500"
             @click="goDetailPaper"
         >
             <div class="mr-3 font-bold text-gray-950">{{ Title_En }}</div>
@@ -25,19 +24,19 @@
         
         <div v-show="omitAbstract" class="px-6">
             <el-scrollbar height="90px">
-                <p class="text-gray-700 text-base font-semibold">
-                    {{  Content_En }}
+                <p class="text-base font-semibold" :class="[isDark ? 'text-gray-200' : 'text-gray-700']">
+                    {{ Content_En }}
                 </p>
             </el-scrollbar>
         </div>
             
         <div class="ml-1 truncate">
             <span class="mr-2">Authors:</span>
-            {{ Authors }}
+            {{ Authors.join(', ') }}
         </div>
         <div class="flex mx-2 -mt-3">
             <span class="mr-2">Submitted:</span>
-            <p class="date">{{ formatDate(Published) }}</p>
+            <p class="date pt-0.5">{{ formatDate(Published) }}</p>
         </div>
     </div>
 </template>
@@ -72,11 +71,14 @@ const waitingStore = useWaitingStore()
 const { waitingPaper } = storeToRefs(waitingStore)
 //pinia的东西要是storeToRefs变成响应式的了，使用就要.value
 
-import { useCurrentDetailPaperStore } from '../stores/currentDetailPaper'
-const { currentDetailPaper } = storeToRefs(useCurrentDetailPaperStore())
+// import { useCurrentDetailPaperStore } from '../stores/currentDetailPaper'
+// const { currentDetailPaper } = storeToRefs(useCurrentDetailPaperStore())
 
 import { useChoosedPaperInfoStore } from '../stores/choosedPaperInfo'
 const choosedPaperInfoStore = useChoosedPaperInfoStore()
+
+import { useDark } from '@vueuse/core'
+const isDark = useDark()
 
 function getRandomLightColor() {
     return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
@@ -89,20 +91,20 @@ function formatDate(dateString) {
 
 //输出1,3,2 post前的命令执行完，不会等post，直接去执行post后面的
 const goDetailPaper = () => {
-    router.push('/detailpaper')
+    // router.push('/detailpaper')
     // axios获取detailpaper的数据 访问后端api/paper
-    waitingPaper.value = true
+    // waitingPaper.value = true
     // console.log(1)
-    axios.post('http://127.0.0.1:8000/api/paper/', {
-        //又忘了.value了
-        "Paper_ID": Paper_ID.value,
-        "Title_En": Title_En.value,
-        "Title_Ja": Title_Ja.value,
-        "Authors": Authors.value,
-        "Categories": Categories.value,
-        "Published": Published.value,
-        "Content_En": Content_En.value,
-        "Pdf_url": Pdf_url.value
+    // axios.post('http://127.0.0.1:8000/api/paper/', {
+    //     //又忘了.value了
+    //     "Paper_ID": Paper_ID.value,
+    //     "Title_En": Title_En.value,
+    //     "Title_Ja": Title_Ja.value,
+    //     "Authors": Authors.value,
+    //     "Categories": Categories.value,
+    //     "Published": Published.value,
+    //     "Content_En": Content_En.value,
+    //     "Pdf_url": Pdf_url.value
         
         // "Paper_ID": "http://arxiv.org/abs/2304.01166v1",
         // "Title_En": "Effective Feature Extraction for Intrusion Detection System using Non-negative Matrix Factorization and Univariate analysis",
@@ -140,6 +142,8 @@ const goDetailPaper = () => {
     choosedPaperInfoStore.Published = Published.value
     choosedPaperInfoStore.Categories = Categories.value
     choosedPaperInfoStore.Pdf_url = Pdf_url.value
+    choosedPaperInfoStore.Paper_ID = Paper_ID.value
+    choosedPaperInfoStore.Content_En = Content_En.value
     //为什么Pdf_url在F12中查看是undefined???
     // 答：そもそもapi/recommend/就没有返回pdf_url；如果是搜索出来的paper点进去没问题的
     console.log(Pdf_url.value)
@@ -157,6 +161,5 @@ const goDetailPaper = () => {
 <style scoped>
 .date {
   font-size: 14px;
-  color: #645e5e;
 }
 </style>
